@@ -3,19 +3,16 @@
 
 #include "stdafx.h"
 #include "Server.h"
-
+#include "ThreadManager.h"
 int main()
 {
 	CServer::getInstance()->Init(9000);
 	CServer::getInstance()->Bind();
 	CServer::getInstance()->Listen();
-	CServer::getInstance()->_AcceptThread.run();
-	CServer::getInstance()->_SelectThread.run();
+	CServer::getInstance()->_AcceptThread.begin();
+	CServer::getInstance()->_SelectThread.begin();
 
-	while (1)
-	{
-	
-	}
+	CThreadManager::getInstance()->join();
 	return 0;
 }
 
