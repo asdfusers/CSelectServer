@@ -3,6 +3,7 @@
 #include "Server.h"
 #include "Sockets.h"
 #include "CriticalSections.h"
+#include "Protocol.h"
 #include <iostream>
 
 CAcceptThread::CAcceptThread()
@@ -34,6 +35,10 @@ void CAcceptThread::threadMain()
 			std::cout << "[서버] 클라이언트 접속 : IP[ " << inet_ntoa(sockAddr.sin_addr) << " ], \t 포트번호[ " << ntohs(sockAddr.sin_port) << " ]"
 				<< std::endl;
 			AddSocketInfo(ConnectionSocket);
+			CPacket sendPacket(P_CONNECTIONSUCCESS_ACK);
+			
+			sendMessage(sendPacket, ConnectionSocket);
+			
 		}
 
 	}
@@ -59,8 +64,8 @@ bool CAcceptThread::AddSocketInfo(SOCKET clientSock)
 	}
 	
 	pSocket->sock = clientSock;
-	pSocket->recvBytes = 0;
-	pSocket->sendBytes = 0;
+	pSocket->receivePacketSize = 0;
+	pSocket->sendPacketSize = 0;
 
 
 
@@ -69,4 +74,12 @@ bool CAcceptThread::AddSocketInfo(SOCKET clientSock)
 
 	
 	return true;
+}
+
+bool CAcceptThread::sendMessage(CPacket & packet, SOCKET _SOCK)
+{
+	 retVal = send(_SOCK, packet.getPacketBuffer(), packet.getPacketSize(),0);
+	 if (retVal == SOCKET_ERROR)
+		 return false;
+	 return true;
 }

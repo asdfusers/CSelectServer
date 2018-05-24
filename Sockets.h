@@ -12,9 +12,12 @@ public:
 
 public:
 	SOCKET sock;
-	int recvBytes;
-	int sendBytes;
-	char buffer[MAX_BUFFER_SIZE];
+	int receivePacketSize;
+	int sendPacketSize;
+	char receivedBuffer[PACKETBUFFERSIZE];
+
+	int retVal;
+
 };
 #endif;
 
