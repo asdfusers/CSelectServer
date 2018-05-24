@@ -19,6 +19,8 @@ public:
 	bool Bind();
 	bool Listen();
 	SOCKET getListenSocket() { return mListen; }
+	void err_quit(char* msg);
+	void err_display(char* msg);
 
 	static CServer* getInstance()
 	{

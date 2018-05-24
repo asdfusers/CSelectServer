@@ -1,25 +1,27 @@
 #include "stdafx.h"
 #include "Thread.h"
-#include "ThreadManager.h"
 
-DWORD CThread::__threadMain(LPVOID arg)
+
+unsigned CThread::__threadMain(void* arg)
 {
 	CThread* self = (CThread*)arg;
 	self->threadMain();
 	return 0;
 }
 
-
-void CThread::begin()
+CThread::CThread()
 {
-	if (isStarted == true)
-		return;
 
-	hThread = CThreadManager::getInstance()->spawn(__threadMain, this, &threadID);
-	isStarted = true;
 }
 
-DWORD CThread::getThreadID()
+
+CThread::~CThread()
 {
-	return 0;
+}
+
+void CThread::run()
+{
+	hThread = (HANDLE)_beginthreadex(NULL, NULL, __threadMain, (void*)this, NULL, NULL);
+
+	CloseHandle(hThread);
 }

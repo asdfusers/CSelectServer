@@ -37,7 +37,9 @@ void CSelectThread::threadMain()
 		//Select()
 		retVal = select(0, &rset, &wset, NULL, NULL);
 		if (retVal == INVALID_SOCKET)
-			cout << "select()" << endl;
+		{
+			cout << "Select()" << endl;
+		}
 		
 		Sleep(10);
 
@@ -52,11 +54,7 @@ void CSelectThread::threadMain()
 				if (retVal == SOCKET_ERROR)
 				{
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
-					{
-						cout << "recv()" << endl;
-						RemoveSocketInfo(i);
 						continue;
-					}
 				}
 				else
 				{
@@ -78,8 +76,6 @@ void CSelectThread::threadMain()
 				{
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
 					{
-						cout << "send()" << endl;
-						RemoveSocketInfo(i);
 						continue;
 					}
 				}
@@ -112,9 +108,4 @@ bool CSelectThread::RemoveSocketInfo(int nIndex)
 	}
 	CServer::getInstance()->socketNumb--;
 	return true;
-}
-
-bool CSelectThread::sendMessage(CSockets sock, CPacket & packet)
-{
-	send(sock.sock, packet.getPacketBuffer(), packet.getPacketSize(), 0);
 }

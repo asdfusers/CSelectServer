@@ -3,7 +3,7 @@
 #define CSELECTTHREAD_H
 
 #include "Thread.h"
-#include "Packet.h"
+
 class CSelectThread :
 	public CThread
 {
@@ -15,9 +15,6 @@ public:
 	virtual void threadMain();
 	void SetSocket(SOCKET _sock) { mListen = _sock; }
 	bool RemoveSocketInfo(int nIndex);
-
-	bool sendMessage(CSockets sock, CPacket& packet);
-	bool receiveMessage();
 private:
 	FD_SET rset;
 	FD_SET wset;

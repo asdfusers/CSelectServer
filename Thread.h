@@ -8,16 +8,16 @@ class CThread
 {
 protected:
 	virtual void threadMain() = 0;
-	static DWORD WINAPI __threadMain(LPVOID arg);
 
+	static unsigned WINAPI __threadMain(void* arg);
 public:
-	void begin();
-	DWORD getThreadID();
+	CThread();
+	~CThread();
+	void run();
+
 
 private:
 	HANDLE hThread;
-	bool isStarted;
-	DWORD threadID;
 };
 #endif
 
