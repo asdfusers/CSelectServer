@@ -1,7 +1,23 @@
-﻿  SelectThread.cpp
-  Generating Code...
-  Compiling...
+﻿  stdafx.cpp
+  UserManager.cpp
+  Thread.cpp
+  Stage.cpp
+  Sockets.cpp
+  Server.cpp
+c:\users\danawacomputer\documents\github\cselectserver\server.cpp(85): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'LPCTSTR'입니다.
+  c:\users\danawacomputer\documents\github\cselectserver\server.cpp(85): note: 서식 문자열에서 '%ls'을(를) 사용하는 것이 좋습니다.
+  c:\users\danawacomputer\documents\github\cselectserver\server.cpp(85): note: 서식 문자열에서 '%lls'을(를) 사용하는 것이 좋습니다.
+  c:\users\danawacomputer\documents\github\cselectserver\server.cpp(85): note: 서식 문자열에서 '%Ls'을(를) 사용하는 것이 좋습니다.
+  c:\users\danawacomputer\documents\github\cselectserver\server.cpp(85): note: 서식 문자열에서 '%ws'을(를) 사용하는 것이 좋습니다.
+  SelectThread.cpp
+  RoomManager.cpp
   Message.cpp
-  Generating Code...
-  CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.exe
-  CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.pdb (Full PDB)
+  GameUser.cpp
+  GameManager.cpp
+  CSelectServer.cpp
+  CriticalSections.cpp
+  AcceptThread.cpp
+  코드를 생성하고 있습니다...
+  LINK : C:\Users\danawacomputer\Documents\GitHub\CSelectServer\Debug\CSelectServer.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+  CSelectServer.vcxproj -> C:\Users\danawacomputer\Documents\GitHub\CSelectServer\Debug\CSelectServer.exe
+  CSelectServer.vcxproj -> C:\Users\danawacomputer\Documents\GitHub\CSelectServer\Debug\CSelectServer.pdb (Full PDB)
