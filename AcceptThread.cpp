@@ -3,11 +3,7 @@
 #include "Server.h"
 #include "Sockets.h"
 #include "CriticalSections.h"
-
 #include <iostream>
-
-
-
 
 CAcceptThread::CAcceptThread()
 {
@@ -31,7 +27,7 @@ void CAcceptThread::threadMain()
 		if (ConnectionSocket == INVALID_SOCKET)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
-				std::cout << "Accept Error" << std::endl;
+				cout << "accept()" << endl;
 		}
 		else
 		{
