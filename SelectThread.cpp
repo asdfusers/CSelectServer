@@ -50,15 +50,17 @@ void CSelectThread::threadMain()
 			if (FD_ISSET(pInfo->sock, &rset))
 			{
 				onReceive(i);
+				
 				if (retVal == SOCKET_ERROR)
 				{
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
 					{
-						cout << "recv()" << endl;
+
 						RemoveSocketInfo(i);
 						continue;
 					}
 				}
+			
 			}
 			
 		}
@@ -97,10 +99,13 @@ bool CSelectThread::onReceive(int idx)
 	while (CServer::getInstance()->g_SocketArray[idx]->receivePacketSize > 0)
 	{
 		receivedPacket.copyToBuffer(CServer::getInstance()->g_SocketArray[idx]->receivedBuffer, CServer::getInstance()->g_SocketArray[idx]->receivePacketSize);
+		
 		if (receivedPacket.isValidPacket() == true && CServer::getInstance()->g_SocketArray[idx]->receivePacketSize >= (int)receivedPacket.getPacketSize())
+		
 		{
 
 			packetParsing(receivedPacket, idx);
+			
 			char buffer[PACKETBUFFERSIZE];
 			CServer::getInstance()->g_SocketArray[idx]->receivePacketSize -= receivedPacket.getPacketSize();
 			CopyMemory(buffer, (CServer::getInstance()->g_SocketArray[idx]->receivedBuffer + receivedPacket.getPacketSize()), CServer::getInstance()->g_SocketArray[idx]->receivePacketSize);
@@ -134,15 +139,16 @@ void CSelectThread::onPTTestPacket1Req(CPacket & packet, int idx)
 {
 
 	{
-		char str[127];
-		packet >> (LPTSTR)str;
+
+		wchar_t  str[127];
+		packet >> str;
 		printf("P_TESTPACKET1_REQ received : %s\n", str);
 	}
 
 	{
 		CPacket sendPacket(P_TESTPACKET1_ACK);
 
-		sendPacket << "Test packet 2";
+		sendPacket << L"Test packet 2";
 		sendMessage(sendPacket, idx);
 	}
 }
@@ -150,16 +156,16 @@ void CSelectThread::onPTTestPacket1Req(CPacket & packet, int idx)
 void CSelectThread::onPTTestPacket2Req(CPacket & packet, int idx)
 {
 	{
-		char str[127];
+		wchar_t str[127];
 
-		packet >> (LPTSTR)str;
+		packet >> str;
 		printf("P_TESTPACKET2_REQ received : %s\n", str);
 	}
 
 	{
 		CPacket sendPacket(P_TESTPACKET2_ACK);
 
-		sendPacket << "Test packet 3";
+		sendPacket << L"Test packet 3";
 		sendMessage(sendPacket, idx);
 	}
 }
@@ -167,16 +173,16 @@ void CSelectThread::onPTTestPacket2Req(CPacket & packet, int idx)
 void CSelectThread::onPTTestPacket3Req(CPacket & packet, int idx)
 {
 	{
-		char str[127];
+		wchar_t str[127];
 
-		packet >> (LPTSTR)str;
+		packet >> str;
 		printf("P_TESTPACKET3_REQ received : %s\n", str);
 	}
 
 	{
 		CPacket sendPacket(P_TESTPACKET3_ACK);
 
-		sendPacket << "Test packet 1";
+		sendPacket << L"Test packet 1";
 		sendMessage(sendPacket, idx);
 	}
 }

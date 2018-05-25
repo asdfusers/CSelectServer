@@ -141,7 +141,12 @@ CPacket & CPacket::operator<<(__int64 arg)
 
 CPacket &CPacket::operator<<(LPTSTR arg)
 {
-	WriteData(arg, lstrlen(arg) * sizeof(TCHAR) + sizeof(TCHAR));
+	char* pStr;
+	int strSize = WideCharToMultiByte(CP_ACP, 0, arg, -1, NULL, 0, NULL, NULL);
+	pStr = new char[strSize];
+	WideCharToMultiByte(CP_ACP, 0, arg, -1, pStr, strSize, 0, 0);
+
+	WriteData(pStr, lstrlen(arg) * sizeof(wchar_t) + sizeof(wchar_t));
 
 	return *this;
 }
@@ -157,6 +162,8 @@ CPacket & CPacket::operator<<(CPacket & arg)
 
 	return *this;
 }
+
+
 
 CPacket & CPacket::operator >> (bool & arg)
 {
@@ -195,7 +202,8 @@ CPacket & CPacket::operator >> (__int64 & arg)
 
 CPacket & CPacket::operator >> (LPTSTR arg)
 {
-	ReadData(arg, lstrlen((LPTSTR)readPosition) * sizeof(TCHAR) + sizeof(TCHAR));
+	
+	ReadData(arg, lstrlen((LPTSTR)readPosition) * sizeof(wchar_t) + sizeof(wchar_t));
 
 	return *this;
 }

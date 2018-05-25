@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
+#include <string>
 #include <Windows.h>
+#include "Protocol.h"
 #define PACKETBUFFERSIZE 8192
 #define PACKETHEADERSIZE 4
 
@@ -42,10 +44,11 @@ public:
 	CPacket&	operator >> (int& arg);
 	CPacket&	operator >> (long& arg);
 	CPacket&	operator >> (DWORD& arg);
-	CPacket&	 operator >> (__int64& arg);
-	CPacket&	 operator >> (LPTSTR arg);
+	CPacket&	operator >> (__int64& arg);
+	CPacket&	operator >> (LPTSTR arg);
 	CPacket&	operator >> (CPacket& arg);
 
+	
 protected:
 	typedef struct
 	{

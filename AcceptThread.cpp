@@ -36,7 +36,7 @@ void CAcceptThread::threadMain()
 				<< std::endl;
 			AddSocketInfo(ConnectionSocket);
 			CPacket sendPacket(P_CONNECTIONSUCCESS_ACK);
-			
+			sendPacket << L"Welcome To Network GameLobby \nPlease Input Your ID and Password\n";
 			sendMessage(sendPacket, ConnectionSocket);
 			
 		}
