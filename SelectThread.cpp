@@ -19,19 +19,17 @@ void CSelectThread::threadMain()
 	{
 		// 소켓 셋 초기화
 
-
 		FD_ZERO(&rset);
 		FD_ZERO(&wset);
 
 		FD_SET(mListen, &rset);
 		// 소켓 셋 지정
-		for (int i = 0; i < CServer::getInstance()->socketNumb; i++)
+		for (auto &socket : socketList)
 		{
-			if (CServer::getInstance()->g_SocketArray[i]->receivePacketSize > CServer::getInstance()->g_SocketArray[i]->sendPacketSize)
-				FD_SET(CServer::getInstance()->g_SocketArray[i]->sock, &wset);
-		
+			if (socket.receivePacketSize > socket.sendPacketSize)
+				FD_SET(socket.sock, &wset);
 			else
-				FD_SET(CServer::getInstance()->g_SocketArray[i]->sock, &rset);
+				FD_SET(socket.sock, &rset);
 		}
 
 		//Select()
@@ -39,151 +37,61 @@ void CSelectThread::threadMain()
 		if (retVal == INVALID_SOCKET)
 			cout << "select()" << endl;
 		
-		Sleep(10);
-
-
-		for (int i = 0; i < CServer::getInstance()->socketNumb; i++)
+		Sleep(5);
+		for (auto socket : socketList)
 		{
-			
-			CSockets* pInfo = CServer::getInstance()->g_SocketArray[i];
-			
-			if (FD_ISSET(pInfo->sock, &rset))
-			{
-				onReceive(i);
-				
-				if (retVal == SOCKET_ERROR)
-				{
-					if (WSAGetLastError() != WSAEWOULDBLOCK)
-					{
-
-						RemoveSocketInfo(i);
-						continue;
-					}
-				}
-			
+			if(FD_ISSET(socket.sock, &rset))
+			{ 
+				onReceive(socket);
 			}
-			
+			else if (FD_ISSET(socket.sock, &wset))
+			{
+
+			}
 		}
+		
+
+
+	
 	}
 }
 
-bool CSelectThread::RemoveSocketInfo(int nIndex)
+bool CSelectThread::RemoveSocketInfo(CSockets _socket)
 {
-	CSockets *ptr = CServer::getInstance()->g_SocketArray[nIndex];
-
-	// 클라이언트 정보 얻기
-	SOCKADDR_IN clientaddr;
-	int addrlen = sizeof(clientaddr);
-	getpeername(ptr->sock, (SOCKADDR *)&clientaddr, &addrlen);
-	printf("[TCP 서버] 클라이언트 종료: IP 주소=%s, 포트 번호=%d\n",
-		inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
-
-	closesocket(ptr->sock);
-	delete ptr;
-
-	for (int i = nIndex; i<CServer::getInstance()->socketNumb; i++) {
-		CServer::getInstance()->g_SocketArray[i] = CServer::getInstance()->g_SocketArray[i + 1];
-	}
-	CServer::getInstance()->socketNumb--;
+//	socketList.remove(_socket);
+	closesocket(_socket.sock);
 	return true;
 }
 
-bool CSelectThread::onReceive(int idx)
+bool CSelectThread::onReceive(CSockets socket)
 {
 	CPacket receivedPacket;
-	DWORD bufSize = PACKETBUFFERSIZE - CServer::getInstance()->g_SocketArray[idx]->receivePacketSize;
+	DWORD bufSize = PACKETBUFFERSIZE - socket.receivePacketSize;
 
-	retVal = recv(CServer::getInstance()->g_SocketArray[idx]->sock, &CServer::getInstance()->g_SocketArray[idx]->receivedBuffer[CServer::getInstance()->g_SocketArray[idx]->receivePacketSize], bufSize, 0);
-	CServer::getInstance()->g_SocketArray[idx]->receivePacketSize = retVal;
+	retVal = recv(socket.sock, &socket.receivedBuffer[socket.receivePacketSize], bufSize, 0);
+	socket.receivePacketSize = retVal;
 
-	while (CServer::getInstance()->g_SocketArray[idx]->receivePacketSize > 0)
+	while (socket.receivePacketSize > 0)
 	{
-		receivedPacket.copyToBuffer(CServer::getInstance()->g_SocketArray[idx]->receivedBuffer, CServer::getInstance()->g_SocketArray[idx]->receivePacketSize);
+		receivedPacket.copyToBuffer(socket.receivedBuffer, socket.receivePacketSize);
 		
-		if (receivedPacket.isValidPacket() == true && CServer::getInstance()->g_SocketArray[idx]->receivePacketSize >= (int)receivedPacket.getPacketSize())
-		
+		if (receivedPacket.isValidPacket() == true && socket.receivePacketSize >= (int)receivedPacket.getPacketSize())
 		{
-
-			packetParsing(receivedPacket, idx);
-			
 			char buffer[PACKETBUFFERSIZE];
-			CServer::getInstance()->g_SocketArray[idx]->receivePacketSize -= receivedPacket.getPacketSize();
-			CopyMemory(buffer, (CServer::getInstance()->g_SocketArray[idx]->receivedBuffer + receivedPacket.getPacketSize()), CServer::getInstance()->g_SocketArray[idx]->receivePacketSize);
-			CopyMemory(CServer::getInstance()->g_SocketArray[idx]->receivedBuffer, buffer, CServer::getInstance()->g_SocketArray[idx]->receivePacketSize);
+			socket.recvQue.push_back(receivedPacket);
+			socket.receivePacketSize -= receivedPacket.getPacketSize();
+			CopyMemory(buffer, (socket.receivedBuffer + receivedPacket.getPacketSize()), socket.receivePacketSize);
+			CopyMemory(socket.receivedBuffer, buffer, socket.receivePacketSize);
 		}
 		else
 			break;
 	}
 	return true;
 }
-
-bool CSelectThread::sendMessage(CPacket packet, int idx)
-{
-	retVal = send(CServer::getInstance()->g_SocketArray[idx]->sock, packet.getPacketBuffer(), packet.getPacketSize(), 0);
-	if (retVal == SOCKET_ERROR)
-		return false;
-	return true;
-}
-
-void CSelectThread::packetParsing(CPacket & packet, int idx)
-{
-	switch (packet.id())
-	{	
-	case  P_TESTPACKET1_REQ:			onPTTestPacket1Req(packet, idx);			break;
-	case  P_TESTPACKET2_REQ:			onPTTestPacket2Req(packet, idx);			break;
-	case  P_TESTPACKET3_REQ:			onPTTestPacket3Req(packet, idx);			break;
-	}
-}
-
-void CSelectThread::onPTTestPacket1Req(CPacket & packet, int idx)
-{
-
-	{
-
-		wchar_t  str[127];
-		packet >> str;
-		printf("P_TESTPACKET1_REQ received : %s\n", str);
-	}
-
-	{
-		CPacket sendPacket(P_TESTPACKET1_ACK);
-
-		sendPacket << L"Test packet 2";
-		sendMessage(sendPacket, idx);
-	}
-}
-
-void CSelectThread::onPTTestPacket2Req(CPacket & packet, int idx)
-{
-	{
-		wchar_t str[127];
-
-		packet >> str;
-		printf("P_TESTPACKET2_REQ received : %s\n", str);
-	}
-
-	{
-		CPacket sendPacket(P_TESTPACKET2_ACK);
-
-		sendPacket << L"Test packet 3";
-		sendMessage(sendPacket, idx);
-	}
-}
-
-void CSelectThread::onPTTestPacket3Req(CPacket & packet, int idx)
-{
-	{
-		wchar_t str[127];
-
-		packet >> str;
-		printf("P_TESTPACKET3_REQ received : %s\n", str);
-	}
-
-	{
-		CPacket sendPacket(P_TESTPACKET3_ACK);
-
-		sendPacket << L"Test packet 1";
-		sendMessage(sendPacket, idx);
-	}
-}
-
+//bool CSelectThread::sendMessage(CPacket packet, int idx)
+//{
+//	retVal = send(CServer::getInstance()->g_SocketArray[idx]->sock, packet.getPacketBuffer(), packet.getPacketSize(), 0);
+//	if (retVal == SOCKET_ERROR)
+//		return false;
+//	return true;
+//}

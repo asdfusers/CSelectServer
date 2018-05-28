@@ -33,9 +33,6 @@
     <ClInclude Include="Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AcceptThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,20 +57,8 @@
     <ClInclude Include="GameUser.h">
       <Filter>InGame</Filter>
     </ClInclude>
-    <ClInclude Include="Message.h">
+    <ClInclude Include="MessageQue.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CriticalSections.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Packet.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Protocol.h">
-      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -84,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AcceptThread.cpp">
@@ -113,17 +95,8 @@
     <ClCompile Include="GameUser.cpp">
       <Filter>InGame</Filter>
     </ClCompile>
-    <ClCompile Include="Message.cpp">
+    <ClCompile Include="MessageQue.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CriticalSections.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Packet.cpp">
-      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

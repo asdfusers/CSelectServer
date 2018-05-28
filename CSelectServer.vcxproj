@@ -148,12 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcceptThread.h" />
-    <ClInclude Include="CriticalSections.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameUser.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="Packet.h" />
-    <ClInclude Include="Protocol.h" />
+    <ClInclude Include="MessageQue.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="SelectThread.h" />
     <ClInclude Include="Server.h" />
@@ -161,18 +158,14 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Thread.h" />
-    <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="UserManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AcceptThread.cpp" />
-    <ClCompile Include="CriticalSections.cpp" />
     <ClCompile Include="CSelectServer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameUser.cpp" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="MessageQue.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="SelectThread.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -184,12 +177,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Thread.cpp" />
-    <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{44c3fa02-e6fa-4dbc-9a8f-e27933497a6e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Server.h"
-
+#include "ThreadManager.h"
 
 CServer::CServer()
 {
@@ -34,9 +34,10 @@ void CServer::Init(int PORT)
 	retVal = ioctlsocket(mListen, FIONBIO, &on);
 	if (retVal == SOCKET_ERROR)
 		cout << "ioctlsocket()" << endl;
-	socketNumb = 0;
+
 	_AcceptThread.SetSocket(mListen);
 	_SelectThread.SetSocket(mListen);
+
 }
 
 bool CServer::Bind()
@@ -59,6 +60,33 @@ bool CServer::Listen()
 		return false;
 	}
 	return true;
+}
+
+void CServer::CopySocketList()
+{
+	if (_AcceptThread.socketList.size() > 0)
+	{
+		CriticalSections::getInstance()->enter();
+		for (auto socket : _AcceptThread.socketList)
+		{
+			_SelectThread.socketList.push_back(socket);
+		}
+		CriticalSections::getInstance()->leave();
+	}
+}
+
+void CServer::CopyMessageQue()
+{
+	if (_SelectThread.MessageQue.size() > 0)
+	{
+		CriticalSections::getInstance()->enter();
+		for (auto Que : _SelectThread.MessageQue)
+		{
+			_MessageQue.messageQue.push_back(Que);
+		}
+		_SelectThread.MessageQue.clear();
+		CriticalSections::getInstance()->leave();
+	}
 }
 
 

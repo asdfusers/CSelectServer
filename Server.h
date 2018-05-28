@@ -6,6 +6,7 @@
 #include "Sockets.h"
 #include "AcceptThread.h"
 #include "SelectThread.h"
+#include "MessageQue.h"
 #include "CriticalSections.h"
 class CServer
 {
@@ -20,20 +21,15 @@ public:
 	bool Listen();
 	SOCKET getListenSocket() { return mListen; }
 
-	static CServer* getInstance()
-	{
-		static CServer g_server;
-		return &g_server;
-	}
-
+	void CopySocketList();
+	void CopyMessageQue();
 public:
-	CSockets* g_SocketArray[FD_SETSIZE];
-	int socketNumb;
 
 	CAcceptThread _AcceptThread;
 	CSelectThread _SelectThread;
-	
+	CMessageQue _MessageQue;
 	CriticalSections m_cs;
+
 private:
 	SOCKET mListen;
 	SOCKADDR_IN sockAddr;

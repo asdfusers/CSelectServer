@@ -4,6 +4,7 @@
 
 #include "Thread.h"
 #include "Packet.h"
+#include "Sockets.h"
 class CAcceptThread :
 	public CThread
 {
@@ -17,11 +18,13 @@ public:
 	bool sendMessage(CPacket& packet, SOCKET SOCK);
 	void SetSocket(SOCKET _sock) { sock = _sock; }
 
+
+	std::list<CSockets> socketList;
 private:
 	SOCKET sock;
 	SOCKADDR_IN sockAddr;
 	int _addrLen;
-	
+
 	int retVal;
 };
 #endif

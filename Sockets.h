@@ -11,6 +11,7 @@ public:
 
 
 public:
+
 	SOCKET sock;
 	int receivePacketSize;
 	int sendPacketSize;
@@ -18,6 +19,8 @@ public:
 
 	int retVal;
 
+	std::list<CPacket> sendQue;
+	std::list<CPacket> recvQue;
 };
 #endif;
 

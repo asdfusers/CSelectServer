@@ -3,6 +3,7 @@
 #define CSELECTTHREAD_H
 #include "Thread.h"
 #include "Packet.h"
+#include "Sockets.h"
 class CSelectThread :
 	public CThread
 {
@@ -13,18 +14,17 @@ public:
 public:
 	virtual void threadMain();
 	void SetSocket(SOCKET _sock) { mListen = _sock; }
-	bool RemoveSocketInfo(int nIndex);
+	bool RemoveSocketInfo(CSockets _socket);
+	bool onReceive(CSockets socket);
+	
+//	bool sendMessage(CPacket packet, int idx);
 
 
-	bool onReceive(int idx);
-	bool sendMessage(CPacket packet, int idx);
-
-	void packetParsing(CPacket& packet, int idx);
 
 
-	void	onPTTestPacket1Req(CPacket& packet, int idx);
-	void	onPTTestPacket2Req(CPacket& packet, int idx);
-	void	onPTTestPacket3Req(CPacket& packet, int idx);
+
+	std::list<CSockets> socketList;
+	std::list<CPacket> MessageQue;
 
 private:
 	FD_SET rset;

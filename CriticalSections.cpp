@@ -3,3 +3,13 @@
 
 
 
+CriticalSections*	CriticalSections::selfIns = 0;
+
+void CriticalSections::releaseInstance()
+{
+	if (selfIns != 0)
+	{
+		delete selfIns;
+		selfIns = 0;
+	}
+}

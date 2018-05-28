@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 enum PacketList
 {
 	P_CONNECTIONSUCCESS_ACK = 100,
@@ -9,6 +10,7 @@ enum PacketList
 };
 
 struct Login
+
 {
 	char ID[10];
 	char password[15];

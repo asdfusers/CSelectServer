@@ -3,16 +3,26 @@
 
 #include "stdafx.h"
 #include "Server.h"
-#include "ThreadManager.h"
+
 int main()
 {
-	CServer::getInstance()->Init(9000);
-	CServer::getInstance()->Bind();
-	CServer::getInstance()->Listen();
-	CServer::getInstance()->_AcceptThread.begin();
-	CServer::getInstance()->_SelectThread.begin();
+	CServer server;
+	server.Init(9000);
+	server.Bind();
+	server.Listen();
 
-	CThreadManager::getInstance()->join();
+	server._AcceptThread.begin();
+	server._SelectThread.begin();
+//	CThreadManager::getInstance()->join();
+	while (1)
+	{
+		
+		server.CopySocketList();
+		server.CopyMessageQue();
+	}
+
+
+
 	return 0;
 }
 
