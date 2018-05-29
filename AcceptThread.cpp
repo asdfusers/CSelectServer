@@ -22,6 +22,7 @@ void CAcceptThread::threadMain()
 	
 	while(1)
 	{
+		Sleep(5);
 		ConnectionSocket = accept(sock, (SOCKADDR*)&sockAddr, &_addrLen);
 		
 		if (ConnectionSocket == INVALID_SOCKET)
@@ -34,9 +35,9 @@ void CAcceptThread::threadMain()
 			std::cout << "[서버] 클라이언트 접속 : IP[ " << inet_ntoa(sockAddr.sin_addr) << " ], \t 포트번호[ " << ntohs(sockAddr.sin_port) << " ]"
 				<< std::endl;
 			AddSocketInfo(ConnectionSocket);
-			/*CPacket sendPacket(P_CONNECTIONSUCCESS_ACK);
+			CPacket sendPacket(P_CONNECTIONSUCCESS_ACK);
 			sendPacket << L"Welcome To Network GameLobby \nPlease Input Your ID and Password\n";
-			sendMessage(sendPacket, ConnectionSocket);*/
+			sendMessage(sendPacket, ConnectionSocket);
 			
 		}
 
@@ -55,6 +56,7 @@ bool CAcceptThread::AddSocketInfo(SOCKET clientSock)
 	CriticalSections::getInstance()->enter();
 	socketList.push_back(pSocket);
 	CriticalSections::getInstance()->leave();
+
 	return true;
 }
 

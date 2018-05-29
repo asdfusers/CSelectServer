@@ -38,6 +38,10 @@ void CServer::Init(int PORT)
 	_AcceptThread.SetSocket(mListen);
 	_SelectThread.SetSocket(mListen);
 
+	_AcceptThread.begin();
+	_SelectThread.begin();
+
+
 }
 
 bool CServer::Bind()
@@ -64,15 +68,15 @@ bool CServer::Listen()
 
 void CServer::CopySocketList()
 {
-	if (_AcceptThread.socketList.size() > 0)
+	
+	CriticalSections::getInstance()->enter();
+	for (auto socket : _AcceptThread.socketList)
 	{
-		CriticalSections::getInstance()->enter();
-		for (auto socket : _AcceptThread.socketList)
-		{
-			_SelectThread.socketList.push_back(socket);
-		}
-		CriticalSections::getInstance()->leave();
+		_SelectThread.socketList.push_back(socket);
 	}
+	_AcceptThread.socketList.clear();
+	CriticalSections::getInstance()->leave();
+
 }
 
 void CServer::CopyMessageQue()

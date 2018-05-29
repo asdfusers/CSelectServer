@@ -13,7 +13,3 @@ CSockets::~CSockets()
 	
 }
 
-
-
-
-

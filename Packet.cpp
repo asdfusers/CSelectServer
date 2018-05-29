@@ -74,7 +74,7 @@ void CPacket::clear()
 	ZeroMemory(packetBuffer, PACKETBUFFERSIZE);
 	packetHeader.dataSize = (unsigned short*)(packetBuffer + 0);
 	packetHeader.protocolID = (unsigned short*)(packetBuffer + 2);
-	dataField = (char*)(packetBuffer + 4);
+	dataField = &packetBuffer[4];
 	readPosition = writePosition = dataField;
 	endOfDataField = &dataField[PACKETBUFFERSIZE - 1];
 }

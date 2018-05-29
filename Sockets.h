@@ -16,11 +16,12 @@ public:
 	int receivePacketSize;
 	int sendPacketSize;
 	char receivedBuffer[PACKETBUFFERSIZE];
-
 	int retVal;
 
 	std::list<CPacket> sendQue;
 	std::list<CPacket> recvQue;
+
+
 };
 #endif;
 

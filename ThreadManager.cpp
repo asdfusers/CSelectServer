@@ -19,7 +19,9 @@ void CThreadManager::join()
 
 	while (pos != listThreadHandle.end())
 	{
+
 		posPrev = pos++;
+
 		WaitForSingleObject(*posPrev, INFINITE);
 		listThreadHandle.erase(posPrev);
 	}

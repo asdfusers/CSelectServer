@@ -4,6 +4,7 @@
 #include "Sockets.h"
 #include "CriticalSections.h"
 #include "Protocol.h"
+#include <algorithm>
 CSelectThread::CSelectThread()
 {
 }
@@ -24,7 +25,7 @@ void CSelectThread::threadMain()
 
 		FD_SET(mListen, &rset);
 		// 소켓 셋 지정
-		for (auto &socket : socketList)
+		for (auto socket : socketList)
 		{
 			if (socket.receivePacketSize > socket.sendPacketSize)
 				FD_SET(socket.sock, &wset);
@@ -36,18 +37,40 @@ void CSelectThread::threadMain()
 		retVal = select(0, &rset, &wset, NULL, NULL);
 		if (retVal == INVALID_SOCKET)
 			cout << "select()" << endl;
-		
-		Sleep(5);
-		for (auto socket : socketList)
+
+		Sleep(10);
+		itr = socketList.begin();
+		for (;itr != socketList.end();)
 		{
-			if(FD_ISSET(socket.sock, &rset))
-			{ 
-				onReceive(socket);
+			
+			if (FD_ISSET(itr->sock, &rset))
+			{
+
+				retVal = onReceive(*itr);
+
+				if (retVal == SOCKET_ERROR)
+				{
+					if (WSAGetLastError() != WSAEWOULDBLOCK)
+					{
+						std::list<CSockets>::iterator temp;
+						temp = itr;
+						*itr++;
+						RemoveSocketInfo(*temp);
+						continue;
+					}
+				}
+
+				else if (retVal == 0)
+				{
+					RemoveSocketInfo(*itr);
+					continue;
+				}
 			}
-			else if (FD_ISSET(socket.sock, &wset))
+			else if (FD_ISSET(itr->sock, &wset))
 			{
 
 			}
+			*itr++;
 		}
 		
 
@@ -56,14 +79,29 @@ void CSelectThread::threadMain()
 	}
 }
 
+
 bool CSelectThread::RemoveSocketInfo(CSockets _socket)
 {
-//	socketList.remove(_socket);
+	std::list<CSockets>::iterator itr = socketList.begin();
+	while(itr != socketList.end())
+	{
+		if (itr->sock == _socket.sock)
+			itr = socketList.erase(itr++);
+		else
+			++itr;
+	}
+	SOCKADDR_IN clientaddr;
+	int addrlen = sizeof(clientaddr);
+	getpeername(_socket.sock, (SOCKADDR *)&clientaddr, &addrlen);
+	printf("[서버] 클라이언트 종료: IP 주소=%s, 포트 번호=%d\n",
+		inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+
 	closesocket(_socket.sock);
+	_socket.sock = INVALID_SOCKET;
 	return true;
 }
 
-bool CSelectThread::onReceive(CSockets socket)
+int CSelectThread::onReceive(CSockets socket)
 {
 	CPacket receivedPacket;
 	DWORD bufSize = PACKETBUFFERSIZE - socket.receivePacketSize;
@@ -86,8 +124,9 @@ bool CSelectThread::onReceive(CSockets socket)
 		else
 			break;
 	}
-	return true;
+	return retVal;
 }
+
 //bool CSelectThread::sendMessage(CPacket packet, int idx)
 //{
 //	retVal = send(CServer::getInstance()->g_SocketArray[idx]->sock, packet.getPacketBuffer(), packet.getPacketSize(), 0);
