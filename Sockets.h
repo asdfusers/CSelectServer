@@ -8,18 +8,16 @@
 class CSockets
 {
 public:
-	CSockets();
+	CSockets(SOCKET _socket);
 	~CSockets();
-	CSockets(const CSockets& val);
-	void Init();
-
+	CSockets(const CSockets& value);
 public:
 	SOCKET sock;
 	int receivePacketSize;
 	int sendPacketSize;
 	char receivedBuffer[PACKETBUFFERSIZE];
 	int retVal;
-//
+
 	CRecvQue recvQue;
 	CSendQue sendQue;
 

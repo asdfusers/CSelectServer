@@ -24,7 +24,7 @@ void CSelectThread::threadMain()
 
 		FD_SET(mListen, &rset);
 		// 소켓 셋 지정
-		for (auto &socket : socketList)
+		for (auto socket : socketList)
 		{
 			if (socket.receivePacketSize > socket.sendPacketSize)
 				FD_SET(socket.sock, &wset);
@@ -40,6 +40,7 @@ void CSelectThread::threadMain()
 		Sleep(5);
 
 		itr = socketList.begin();
+	
 		for (;itr != socketList.end();)
 		{
 			
@@ -47,7 +48,7 @@ void CSelectThread::threadMain()
 			{
 
 				retVal = onReceive(*itr);
-
+				itr->receivePacketSize = retVal;
 				if (retVal == SOCKET_ERROR)
 				{
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
@@ -68,11 +69,16 @@ void CSelectThread::threadMain()
 					RemoveSocketInfo(*temp);
 					continue;
 				}
+
 			}
 
 			else if (FD_ISSET(itr->sock, &wset))
 			{
-
+				if (!itr->sendQue.sendQue.empty())
+				{
+					itr->sendQue.SendMessageW();
+				}
+				itr->receivePacketSize = 0;
 			}
 			*itr++;
 		}
@@ -105,9 +111,10 @@ bool CSelectThread::RemoveSocketInfo(CSockets _socket)
 	return true;
 }
 
-int CSelectThread::onReceive(CSockets socket)
+int CSelectThread::onReceive(CSockets& socket)
 {
 	CPacket receivedPacket;
+
 	DWORD bufSize = PACKETBUFFERSIZE - socket.receivePacketSize;
 
 	retVal = recv(socket.sock, &socket.receivedBuffer[socket.receivePacketSize], bufSize, 0);

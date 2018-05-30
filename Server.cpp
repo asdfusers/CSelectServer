@@ -74,15 +74,3 @@ void CServer::CopySocketList()
 	m_cs.leave();
 }
 
-void CServer::CopySendSocket()
-{
-	m_cs.enter();
-	for (auto socket : _AcceptThread.socketList)
-	{
-		socket.sendQue.
-	}
-	m_cs.leave();
-
-}
-
-

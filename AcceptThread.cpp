@@ -8,6 +8,7 @@
 
 CAcceptThread::CAcceptThread()
 {
+
 }
 
 CAcceptThread::~CAcceptThread()
@@ -47,15 +48,10 @@ void CAcceptThread::threadMain()
 
 bool CAcceptThread::AddSocketInfo(SOCKET clientSock)
 {
-	CSockets pSocket;
-
-	pSocket.sock = clientSock;
-	pSocket.receivePacketSize = 0;
-	pSocket.sendPacketSize = 0;
-	pSocket.Init();
-	CriticalSections::getInstance()->enter();
+	CSockets pSocket(clientSock);
+	cs.enter();
 	socketList.push_back(pSocket);
-	CriticalSections::getInstance()->leave();
+	cs.leave();
 
 	return true;
 }

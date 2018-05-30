@@ -18,7 +18,7 @@ public:
 	virtual void threadMain();
 	void SetSocket(SOCKET _sock) { mListen = _sock; }
 	bool RemoveSocketInfo(CSockets _socket);
-	int onReceive(CSockets socket);
+	int onReceive(CSockets& socket);
 
 
 	std::list<CSockets> socketList;

@@ -18,7 +18,7 @@ public:
 	bool sendMessage(CPacket& packet, SOCKET SOCK);
 	void SetSocket(SOCKET _sock) { sock = _sock; }
 
-
+	CriticalSections cs;
 	std::list<CSockets> socketList;
 private:
 	SOCKET sock;
