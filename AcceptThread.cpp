@@ -21,8 +21,8 @@ void CAcceptThread::threadMain()
 	
 	
 	while(1)
-	{
-		Sleep(5);
+	{	
+	
 		ConnectionSocket = accept(sock, (SOCKADDR*)&sockAddr, &_addrLen);
 		
 		if (ConnectionSocket == INVALID_SOCKET)
@@ -52,7 +52,7 @@ bool CAcceptThread::AddSocketInfo(SOCKET clientSock)
 	pSocket.sock = clientSock;
 	pSocket.receivePacketSize = 0;
 	pSocket.sendPacketSize = 0;
-	
+	pSocket.Init();
 	CriticalSections::getInstance()->enter();
 	socketList.push_back(pSocket);
 	CriticalSections::getInstance()->leave();

@@ -14,8 +14,22 @@ int main()
 
 	while (1)
 	{
-		server.CopySocketList();
-		server.CopyMessageQue();
+		if (server._AcceptThread.socketList.size() > 0)
+		{
+			server.CopySocketList();
+		}
+		for (auto user : server._SelectThread.socketList)
+		{
+			if (!user.recvQue.recvQue.empty())
+			{
+				user.recvQue.packetParsing(user.recvQue.recvQue.front(), user.sock);
+				user.recvQue.recvQue.pop();
+			}
+			if (!user.sendQue.sendQue.empty())
+			{
+				user.sendQue.SendMessageW();
+			}
+		}
 	}
 		CThreadManager::getInstance()->join();
 

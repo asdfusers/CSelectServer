@@ -6,7 +6,6 @@
 #include "Sockets.h"
 #include "AcceptThread.h"
 #include "SelectThread.h"
-#include "MessageQue.h"
 #include "CriticalSections.h"
 class CServer
 {
@@ -22,12 +21,11 @@ public:
 	SOCKET getListenSocket() { return mListen; }
 
 	void CopySocketList();
-	void CopyMessageQue();
-public:
+	void CopySendSocket();
 
+public:
 	CAcceptThread _AcceptThread;
 	CSelectThread _SelectThread;
-	CMessageQue _MessageQue;
 	CriticalSections m_cs;
 
 private:

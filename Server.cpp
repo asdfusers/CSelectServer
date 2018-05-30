@@ -68,29 +68,21 @@ bool CServer::Listen()
 
 void CServer::CopySocketList()
 {
-	
-	CriticalSections::getInstance()->enter();
-	for (auto socket : _AcceptThread.socketList)
-	{
-		_SelectThread.socketList.push_back(socket);
-	}
+	m_cs.enter();
+	_SelectThread.socketList.assign(_AcceptThread.socketList.begin(), _AcceptThread.socketList.end());
 	_AcceptThread.socketList.clear();
-	CriticalSections::getInstance()->leave();
-
+	m_cs.leave();
 }
 
-void CServer::CopyMessageQue()
+void CServer::CopySendSocket()
 {
-	if (_SelectThread.MessageQue.size() > 0)
+	m_cs.enter();
+	for (auto socket : _AcceptThread.socketList)
 	{
-		CriticalSections::getInstance()->enter();
-		for (auto Que : _SelectThread.MessageQue)
-		{
-			_MessageQue.messageQue.push_back(Que);
-		}
-		_SelectThread.MessageQue.clear();
-		CriticalSections::getInstance()->leave();
+		socket.sendQue.
 	}
+	m_cs.leave();
+
 }
 
 

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "SelectThread.h"
 #include "Server.h"
-#include "Sockets.h"
 #include "CriticalSections.h"
 #include "Protocol.h"
 #include <algorithm>
@@ -25,7 +24,7 @@ void CSelectThread::threadMain()
 
 		FD_SET(mListen, &rset);
 		// 소켓 셋 지정
-		for (auto socket : socketList)
+		for (auto &socket : socketList)
 		{
 			if (socket.receivePacketSize > socket.sendPacketSize)
 				FD_SET(socket.sock, &wset);
@@ -38,7 +37,8 @@ void CSelectThread::threadMain()
 		if (retVal == INVALID_SOCKET)
 			cout << "select()" << endl;
 
-		Sleep(10);
+		Sleep(5);
+
 		itr = socketList.begin();
 		for (;itr != socketList.end();)
 		{
@@ -62,10 +62,14 @@ void CSelectThread::threadMain()
 
 				else if (retVal == 0)
 				{
-					RemoveSocketInfo(*itr);
+					std::list<CSockets>::iterator temp;
+					temp = itr;
+					*itr++;
+					RemoveSocketInfo(*temp);
 					continue;
 				}
 			}
+
 			else if (FD_ISSET(itr->sock, &wset))
 			{
 
@@ -116,7 +120,9 @@ int CSelectThread::onReceive(CSockets socket)
 		if (receivedPacket.isValidPacket() == true && socket.receivePacketSize >= (int)receivedPacket.getPacketSize())
 		{
 			char buffer[PACKETBUFFERSIZE];
-			socket.recvQue.push_back(receivedPacket);
+			cs.enter();
+			socket.recvQue.recvQue.push(receivedPacket);
+			cs.leave();
 			socket.receivePacketSize -= receivedPacket.getPacketSize();
 			CopyMemory(buffer, (socket.receivedBuffer + receivedPacket.getPacketSize()), socket.receivePacketSize);
 			CopyMemory(socket.receivedBuffer, buffer, socket.receivePacketSize);
