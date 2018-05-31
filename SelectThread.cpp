@@ -18,13 +18,13 @@ void CSelectThread::threadMain()
 	while (1)
 	{
 		// 소켓 셋 초기화
+		struct timeval tv = { 0, 100 };
 
 		FD_ZERO(&rset);
 		FD_ZERO(&wset);
-
 		FD_SET(mListen, &rset);
 		// 소켓 셋 지정
-		for (auto socket : socketList)
+		for (auto& socket : socketList)
 		{
 			if (socket.receivePacketSize > socket.sendPacketSize)
 				FD_SET(socket.sock, &wset);
@@ -33,82 +33,69 @@ void CSelectThread::threadMain()
 		}
 
 		//Select()
-		retVal = select(0, &rset, &wset, NULL, NULL);
+		retVal = select(0, &rset, &wset, NULL, &tv);
 		if (retVal == INVALID_SOCKET)
 			cout << "select()" << endl;
-
-		Sleep(5);
-
+		
+		std::list<CSockets>::iterator itr;
 		itr = socketList.begin();
 	
-		for (;itr != socketList.end();)
-		{
-			
+		while(itr != socketList.end())
+		{			
 			if (FD_ISSET(itr->sock, &rset))
 			{
-
 				retVal = onReceive(*itr);
-				itr->receivePacketSize = retVal;
+				
 				if (retVal == SOCKET_ERROR)
 				{
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
-					{
-						std::list<CSockets>::iterator temp;
-						temp = itr;
-						*itr++;
-						RemoveSocketInfo(*temp);
+					{						
+						cs.enter();
+						itr = RemoveSocketInfo(*itr);
+						cs.leave();
 						continue;
 					}
 				}
-
 				else if (retVal == 0)
 				{
-					std::list<CSockets>::iterator temp;
-					temp = itr;
-					*itr++;
-					RemoveSocketInfo(*temp);
+					cs.enter();
+					itr = RemoveSocketInfo(*itr);
+					cs.leave();
 					continue;
 				}
-
-			}
-
-			else if (FD_ISSET(itr->sock, &wset))
-			{
-				if (!itr->sendQue.sendQue.empty())
-				{
-					itr->sendQue.SendMessageW();
-				}
-				itr->receivePacketSize = 0;
-			}
+						
+			}	
 			*itr++;
 		}
-		
-
-
-	
 	}
 }
 
 
-bool CSelectThread::RemoveSocketInfo(CSockets _socket)
+std::list<CSockets>::iterator CSelectThread::RemoveSocketInfo(CSockets _socket)
 {
+	CSockets temp = _socket;
+
 	std::list<CSockets>::iterator itr = socketList.begin();
+
 	while(itr != socketList.end())
 	{
 		if (itr->sock == _socket.sock)
-			itr = socketList.erase(itr++);
+		{
+			itr = socketList.erase(itr);
+			break;
+		}
 		else
 			++itr;
 	}
 	SOCKADDR_IN clientaddr;
 	int addrlen = sizeof(clientaddr);
-	getpeername(_socket.sock, (SOCKADDR *)&clientaddr, &addrlen);
+	getpeername(temp.sock, (SOCKADDR *)&clientaddr, &addrlen);
 	printf("[서버] 클라이언트 종료: IP 주소=%s, 포트 번호=%d\n",
 		inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
 
 	closesocket(_socket.sock);
 	_socket.sock = INVALID_SOCKET;
-	return true;
+	return itr;
 }
 
 int CSelectThread::onReceive(CSockets& socket)
@@ -137,13 +124,7 @@ int CSelectThread::onReceive(CSockets& socket)
 		else
 			break;
 	}
+	socket.receivePacketSize = 0;
 	return retVal;
 }
 
-//bool CSelectThread::sendMessage(CPacket packet, int idx)
-//{
-//	retVal = send(CServer::getInstance()->g_SocketArray[idx]->sock, packet.getPacketBuffer(), packet.getPacketSize(), 0);
-//	if (retVal == SOCKET_ERROR)
-//		return false;
-//	return true;
-//}

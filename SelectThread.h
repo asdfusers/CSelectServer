@@ -17,22 +17,22 @@ public:
 public:
 	virtual void threadMain();
 	void SetSocket(SOCKET _sock) { mListen = _sock; }
-	bool RemoveSocketInfo(CSockets _socket);
+	std::list<CSockets>::iterator RemoveSocketInfo(CSockets _socket);
 	int onReceive(CSockets& socket);
 
 
 	std::list<CSockets> socketList;
-	
+	CriticalSections cs;
 private:
 	FD_SET rset;
 	FD_SET wset;
 	SOCKET mListen;
 	SOCKADDR_IN clientAddr;
 	
-	std::list<CSockets>::iterator itr;
+
 	std::queue<CPacket> recvQue;
 	std::queue<CPacket> sendQue;
-	CriticalSections cs;
+	
 	int retVal;
 };
 #endif
