@@ -15,6 +15,5 @@ public:
 	SOCKET socket;
 	std::queue<CPacket> sendQue;
 	CriticalSections cs;
-	int retVal;
 };
 

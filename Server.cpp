@@ -69,10 +69,7 @@ bool CServer::Listen()
 void CServer::CopySocketList()
 {
 	m_cs.enter();
-	for (auto &socket : _AcceptThread.socketList)
-	{
-		_SelectThread.socketList.push_back(socket);
-	}
+	_SelectThread.socketList.assign(_AcceptThread.socketList.begin(), _AcceptThread.socketList.end());
 	_AcceptThread.socketList.clear();
 	m_cs.leave();
 }

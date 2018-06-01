@@ -19,26 +19,15 @@ int main()
 		{
 			server.CopySocketList();
 		}
-		server._SelectThread.cs.enter();
-		for (auto &user : server._SelectThread.socketList)
-		{
 
-			
+		for (auto user : server._SelectThread.socketList)
+		{
 			if (!user.recvQue.recvQue.empty())
 			{
 				user.recvQue.packetParsing(user.recvQue.recvQue.front(), user.sock);
 				user.recvQue.recvQue.pop();
 			}
-
-			if (!user.recvQue.sendQue.empty())
-			{
-				user.sendQue.sendQue.push(user.recvQue.sendQue.front());
-				user.recvQue.sendQue.pop();
-				user.sendQue.SendMessageW();
-			}
 		}
-		server._SelectThread.cs.leave();
-
 	}
 		CThreadManager::getInstance()->join();
 

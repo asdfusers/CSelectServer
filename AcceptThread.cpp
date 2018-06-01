@@ -23,30 +23,18 @@ void CAcceptThread::threadMain()
 	
 	while(1)
 	{	
-		struct timeval tv = { 0, 100 };
-		fd_set rds;
-		FD_ZERO(&rds);
-		FD_SET(sock, &rds);
-		select(0, &rds, 0, 0, &tv);
-
-		/*
+	
+		ConnectionSocket = accept(sock, (SOCKADDR*)&sockAddr, &_addrLen);
 		
 		if (ConnectionSocket == INVALID_SOCKET)
 		{
-			std::cout << WSAGetLastError();
 			if (WSAGetLastError() != WSAEWOULDBLOCK)
 				cout << "accept()" << endl;
-		}*/
-		if (FD_ISSET(sock, &rds))
+		}
+		else
 		{
-			ConnectionSocket = accept(sock, (SOCKADDR*)&sockAddr, &_addrLen);
-			if (ConnectionSocket == INVALID_SOCKET) {
-				if (WSAGetLastError() != WSAEWOULDBLOCK)
-				{
-					std::cout << "Accpet()" << std::endl;
-				}
-			}
-			std::cout << "[서버] 클라이언트 접속 : IP[ " << inet_ntoa(sockAddr.sin_addr) << " ], \t 포트번호[ " << ntohs(sockAddr.sin_port) << " ] \n" << std::endl;
+			std::cout << "[서버] 클라이언트 접속 : IP[ " << inet_ntoa(sockAddr.sin_addr) << " ], \t 포트번호[ " << ntohs(sockAddr.sin_port) << " ]"
+				<< std::endl;
 			AddSocketInfo(ConnectionSocket);
 			CPacket sendPacket(P_CONNECTIONSUCCESS_ACK);
 			sendPacket << L"Welcome To Network GameLobby \nPlease Input Your ID and Password\n";

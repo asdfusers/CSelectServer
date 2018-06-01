@@ -21,6 +21,7 @@ public:
 	SOCKET getListenSocket() { return mListen; }
 
 	void CopySocketList();
+	void CopySendSocket();
 
 public:
 	CAcceptThread _AcceptThread;

@@ -11,16 +11,15 @@ public:
 	~CRecvQue();
 
 public:
-	void	packetParsing(CPacket packet, SOCKET sock);
+	void packetParsing(CPacket packet, SOCKET sock);
 	void	onPTTestPacket1Req(CPacket& packet, SOCKET sock);
 	void	onPTTestPacket2Req(CPacket& packet, SOCKET sock);
 	void	onPTTestPacket3Req(CPacket& packet, SOCKET sock);
-	void	SetSocket(SOCKET _sock) { socket = _sock; }
+	void SetSocket(SOCKET _sock) { socket = _sock; }
 
 public:
 	SOCKET socket;
 	std::queue<CPacket> recvQue;
-	std::queue<CPacket> sendQue;
 	CriticalSections cs;
 };
 
