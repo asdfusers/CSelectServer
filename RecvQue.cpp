@@ -15,27 +15,29 @@ void CRecvQue::packetParsing(CPacket packet, SOCKET sock)
 {
 	switch (packet.id())
 	{
-	case  P_TESTPACKET1_REQ:			onPTTestPacket1Req(packet, sock);			break;
+	case  P_LOGINPACKET_REQ:			onLoginPacket1Req(packet, sock);			break;
 	case  P_TESTPACKET2_REQ:			onPTTestPacket2Req(packet, sock);			break;
 	case  P_TESTPACKET3_REQ:			onPTTestPacket3Req(packet, sock);			break;
 	}
 }
 
 
-void CRecvQue::onPTTestPacket1Req(CPacket & packet, SOCKET sock)
+void CRecvQue::onLoginPacket1Req(CPacket & packet, SOCKET sock)
 {
 
 	{
-		char str[127];
-		packet >> (LPTSTR)str;
-		printf("P_TESTPACKET1_REQ received : %s\n", str);
+		Login log;
+		packet >> log;
+		std::cout << "ID : " << log.ID << "\t PASSWORD : " << log.password << std::endl;
 	}
 
 	{
-		CPacket sendPacket(P_TESTPACKET1_ACK);
+		CPacket sendPacket(P_LOGINPACKET_ACK);
 
-		sendPacket << "Test packet 2";
-
+		sendPacket << L"Test packet 2";
+		cs.enter();
+		sendQue.push(sendPacket);
+		cs.leave();
 	}
 }
 
@@ -51,8 +53,10 @@ void CRecvQue::onPTTestPacket2Req(CPacket & packet, SOCKET sock)
 	{
 		CPacket sendPacket(P_TESTPACKET2_ACK);
 
-		sendPacket << "Test packet 3";
-		
+		sendPacket << L"Test packet 3";
+		cs.enter();
+		sendQue.push(sendPacket);
+		cs.leave();
 	}
 }
 
@@ -68,7 +72,10 @@ void CRecvQue::onPTTestPacket3Req(CPacket & packet, SOCKET sock)
 	{
 		CPacket sendPacket(P_TESTPACKET3_ACK);
 
-		sendPacket << "Test packet 1";
+		sendPacket << L"Test packet 1";
+		cs.enter();
+		sendQue.push(sendPacket);
+		cs.leave();
 		
 	}
 }

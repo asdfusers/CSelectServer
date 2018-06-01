@@ -19,12 +19,13 @@ void CSelectThread::threadMain()
 	{
 		// 소켓 셋 초기화
 
+		struct timeval tv = { 0, 10 };
 		FD_ZERO(&rset);
 		FD_ZERO(&wset);
 
 		FD_SET(mListen, &rset);
 		// 소켓 셋 지정
-		for (auto socket : socketList)
+		for (auto &socket : socketList)
 		{
 			if (socket.receivePacketSize > socket.sendPacketSize)
 				FD_SET(socket.sock, &wset);
@@ -33,70 +34,53 @@ void CSelectThread::threadMain()
 		}
 
 		//Select()
-		retVal = select(0, &rset, &wset, NULL, NULL);
+		retVal = select(0, &rset, &wset, NULL, &tv);
 		if (retVal == INVALID_SOCKET)
 			cout << "select()" << endl;
-
-		Sleep(5);
 
 		itr = socketList.begin();
 	
 		for (;itr != socketList.end();)
-		{
-			
+		{			
 			if (FD_ISSET(itr->sock, &rset))
 			{
-
 				retVal = onReceive(*itr);
-				itr->receivePacketSize = retVal;
 				if (retVal == SOCKET_ERROR)
 				{
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
 					{
-						std::list<CSockets>::iterator temp;
-						temp = itr;
-						*itr++;
-						RemoveSocketInfo(*temp);
+						cs.enter();
+						itr = RemoveSocketInfo(*itr);
+						cs.leave();
 						continue;
 					}
 				}
 
 				else if (retVal == 0)
 				{
-					std::list<CSockets>::iterator temp;
-					temp = itr;
-					*itr++;
-					RemoveSocketInfo(*temp);
+					cs.enter();
+					itr = RemoveSocketInfo(*itr);
+					cs.leave();
 					continue;
 				}
 
 			}
-
-			else if (FD_ISSET(itr->sock, &wset))
-			{
-				if (!itr->sendQue.sendQue.empty())
-				{
-					itr->sendQue.SendMessageW();
-				}
-				itr->receivePacketSize = 0;
-			}
 			*itr++;
 		}
-		
-
-
-	
 	}
 }
 
 
-bool CSelectThread::RemoveSocketInfo(CSockets _socket)
+std::list<CSockets>::iterator CSelectThread::RemoveSocketInfo(CSockets _socket)
 {
 	std::list<CSockets>::iterator itr = socketList.begin();
 	while(itr != socketList.end())
 	{
 		if (itr->sock == _socket.sock)
+		{
 			itr = socketList.erase(itr++);
+			break;
+		}
 		else
 			++itr;
 	}
@@ -108,7 +92,7 @@ bool CSelectThread::RemoveSocketInfo(CSockets _socket)
 
 	closesocket(_socket.sock);
 	_socket.sock = INVALID_SOCKET;
-	return true;
+	return itr;
 }
 
 int CSelectThread::onReceive(CSockets& socket)

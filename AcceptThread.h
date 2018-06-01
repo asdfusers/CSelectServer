@@ -24,7 +24,8 @@ private:
 	SOCKET sock;
 	SOCKADDR_IN sockAddr;
 	int _addrLen;
-
+	FD_SET rds;
+	
 	int retVal;
 };
 #endif
