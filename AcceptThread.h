@@ -1,12 +1,11 @@
 #pragma once
-#ifndef CACCEPTTHREAD_H
-#define CACCEPTTHREAD_H
-
 #include "Thread.h"
 #include "Packet.h"
 #include "Sockets.h"
-class CAcceptThread :
-	public CThread
+#include "CriticalSections.h"
+
+class CAcceptThread : public CThread
+	
 {
 public:
 	CAcceptThread();
@@ -18,8 +17,9 @@ public:
 	bool sendMessage(CPacket& packet, SOCKET SOCK);
 	void SetSocket(SOCKET _sock) { sock = _sock; }
 
-	CriticalSections cs;
+	CS::CriticalSection cs;
 	std::list<CSockets> socketList;
+
 private:
 	SOCKET sock;
 	SOCKADDR_IN sockAddr;
@@ -28,5 +28,3 @@ private:
 	
 	int retVal;
 };
-#endif
-

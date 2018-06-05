@@ -151,10 +151,9 @@
     <ClInclude Include="AcceptThread.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameUser.h" />
-    <ClInclude Include="RecvQue.h" />
+    <ClInclude Include="MessageQue.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="SelectThread.h" />
-    <ClInclude Include="SendQue.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Sockets.h" />
     <ClInclude Include="Stage.h" />
@@ -167,10 +166,9 @@
     <ClCompile Include="CSelectServer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameUser.cpp" />
-    <ClCompile Include="RecvQue.cpp" />
+    <ClCompile Include="MessageQue.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="SelectThread.cpp" />
-    <ClCompile Include="SendQue.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Sockets.cpp" />
     <ClCompile Include="Stage.cpp" />

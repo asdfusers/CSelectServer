@@ -16,24 +16,30 @@ public:
 
 public:
 	void Init(int PORT);
-	bool Bind();
-	bool Listen();
+	void UnInit();
 	SOCKET getListenSocket() { return mListen; }
-
 	void CopySocketList();
-	void CopySendSocket();
 
-public:
-	CAcceptThread _AcceptThread;
-	CSelectThread _SelectThread;
-	CriticalSections m_cs;
+	void Update();
+	bool sendMessage(CPacket packet);
+
+	void packetParsing(CPacket packet);
+	void onLoginPacket1Req(CPacket & packet);
+	void onPTTestPacket2Req(CPacket & packet);
+	void onPTTestPacket3Req(CPacket & packet);
+
+
 
 private:
 	SOCKET mListen;
 	SOCKADDR_IN sockAddr;
 	int addrLen;
 	int retVal;
+	CMessageQue sendMessageQue;
 
+	CAcceptThread _AcceptThread;
+	CSelectThread _SelectThread;
+	CS::CriticalSection m_cs;
 
 };
 

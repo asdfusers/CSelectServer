@@ -1,10 +1,2 @@
-﻿  CSelectServer.cpp
-  Generating Code...
-  Compiling...
-  Sockets.cpp
-  Server.cpp
-  SelectThread.cpp
-  AcceptThread.cpp
-  Generating Code...
-  CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.exe
+﻿  CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.exe
   CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.pdb (Full PDB)

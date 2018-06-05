@@ -57,10 +57,7 @@
     <ClInclude Include="GameUser.h">
       <Filter>InGame</Filter>
     </ClInclude>
-    <ClInclude Include="RecvQue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SendQue.h">
+    <ClInclude Include="MessageQue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,10 +95,7 @@
     <ClCompile Include="GameUser.cpp">
       <Filter>InGame</Filter>
     </ClCompile>
-    <ClCompile Include="RecvQue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SendQue.cpp">
+    <ClCompile Include="MessageQue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

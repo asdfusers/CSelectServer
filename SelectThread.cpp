@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SelectThread.h"
 #include "Server.h"
-#include "CriticalSections.h"
+#include "CriticalSectionLock.h"
 #include "Protocol.h"
 #include <algorithm>
 CSelectThread::CSelectThread()
@@ -18,7 +18,6 @@ void CSelectThread::threadMain()
 	while (1)
 	{
 		// 소켓 셋 초기화
-
 		struct timeval tv = { 0, 10 };
 		FD_ZERO(&rset);
 		FD_ZERO(&wset);
@@ -49,18 +48,16 @@ void CSelectThread::threadMain()
 				{
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
 					{
-						cs.enter();
+						CCriticalSectionLock cs(cs);
 						itr = RemoveSocketInfo(*itr);
-						cs.leave();
 						continue;
 					}
 				}
 
 				else if (retVal == 0)
 				{
-					cs.enter();
+					CCriticalSectionLock cs(cs);
 					itr = RemoveSocketInfo(*itr);
-					cs.leave();
 					continue;
 				}
 
@@ -107,13 +104,13 @@ int CSelectThread::onReceive(CSockets& socket)
 	while (socket.receivePacketSize > 0)
 	{
 		receivedPacket.copyToBuffer(socket.receivedBuffer, socket.receivePacketSize);
-		
+
 		if (receivedPacket.isValidPacket() == true && socket.receivePacketSize >= (int)receivedPacket.getPacketSize())
 		{
 			char buffer[PACKETBUFFERSIZE];
-			cs.enter();
-			socket.recvQue.recvQue.push(receivedPacket);
-			cs.leave();
+			CCriticalSectionLock cs(cs);
+			receivedPacket.SetSocketNumber(socket.sock);
+			recvMessageQue.messageQue.push(receivedPacket);
 			socket.receivePacketSize -= receivedPacket.getPacketSize();
 			CopyMemory(buffer, (socket.receivedBuffer + receivedPacket.getPacketSize()), socket.receivePacketSize);
 			CopyMemory(socket.receivedBuffer, buffer, socket.receivePacketSize);
