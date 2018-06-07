@@ -22,14 +22,16 @@ public:
 
 	void Update();
 	bool sendMessage(CPacket packet);
-
+	bool broadCast(CPacket packet);
 	void packetParsing(CPacket packet);
 	void onLoginPacket1Req(CPacket & packet);
-	void onPTTestPacket2Req(CPacket & packet);
-	void onPTTestPacket3Req(CPacket & packet);
+	void onPSelectLobbyOption(CPacket & packet);
+	void onPPlayerEnterRoom(CPacket & packet);
 
 
-
+	void DeleteUserPool(SOCKET socket);
+	void ChoiceLobbyOption(int iNum, SOCKET socket);
+	void ViewUserInformation(CSockets User);
 private:
 	SOCKET mListen;
 	SOCKADDR_IN sockAddr;

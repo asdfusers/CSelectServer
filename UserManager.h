@@ -15,7 +15,9 @@ private:
 public:
 	void insertUser(CSockets client);
 	void deleteUser(CSockets client);
+	void update(CSockets client);
 	CSockets findUser(SOCKET socket);
+
 
 public:
 	std::map<SOCKET, CSockets> clientPool;

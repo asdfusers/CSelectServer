@@ -60,6 +60,15 @@
     <ClInclude Include="MessageQue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>InGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby.h">
+      <Filter>InGame</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRoom.h">
+      <Filter>InGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -97,6 +106,15 @@
     </ClCompile>
     <ClCompile Include="MessageQue.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>InGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby.cpp">
+      <Filter>InGame</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRoom.cpp">
+      <Filter>InGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

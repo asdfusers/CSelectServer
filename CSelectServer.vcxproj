@@ -86,7 +86,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_WINSOCK_DEPRECATEED_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;_CONSOLE;%(PreprocessorDefinitions);_WINSOCK_DEPRECATEED_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\GC\Documents\Visual Studio 2015\Projects\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -150,8 +150,11 @@
   <ItemGroup>
     <ClInclude Include="AcceptThread.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameRoom.h" />
     <ClInclude Include="GameUser.h" />
+    <ClInclude Include="Lobby.h" />
     <ClInclude Include="MessageQue.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="SelectThread.h" />
     <ClInclude Include="Server.h" />
@@ -165,8 +168,11 @@
     <ClCompile Include="AcceptThread.cpp" />
     <ClCompile Include="CSelectServer.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameRoom.cpp" />
     <ClCompile Include="GameUser.cpp" />
+    <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MessageQue.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="SelectThread.cpp" />
     <ClCompile Include="Server.cpp" />

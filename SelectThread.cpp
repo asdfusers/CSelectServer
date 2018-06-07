@@ -3,6 +3,7 @@
 #include "Server.h"
 #include "CriticalSectionLock.h"
 #include "Protocol.h"
+#include "UserManager.h"
 #include <algorithm>
 CSelectThread::CSelectThread()
 {
@@ -49,7 +50,9 @@ void CSelectThread::threadMain()
 					if (WSAGetLastError() != WSAEWOULDBLOCK)
 					{
 						CCriticalSectionLock cs(cs);
+						CUserManager::getInst()->deleteUser(*itr);
 						itr = RemoveSocketInfo(*itr);
+
 						continue;
 					}
 				}
@@ -57,7 +60,9 @@ void CSelectThread::threadMain()
 				else if (retVal == 0)
 				{
 					CCriticalSectionLock cs(cs);
+					CUserManager::getInst()->deleteUser(*itr);
 					itr = RemoveSocketInfo(*itr);
+					
 					continue;
 				}
 
@@ -121,10 +126,3 @@ int CSelectThread::onReceive(CSockets& socket)
 	return retVal;
 }
 
-//bool CSelectThread::sendMessage(CPacket packet, int idx)
-//{
-//	retVal = send(CServer::getInstance()->g_SocketArray[idx]->sock, packet.getPacketBuffer(), packet.getPacketSize(), 0);
-//	if (retVal == SOCKET_ERROR)
-//		return false;
-//	return true;
-//}
