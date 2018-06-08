@@ -16,10 +16,10 @@ public:
 	void SetRoomNumber(int index) { iRoomNumber = index; }
 	
 	int GetRoomNumber() { return iRoomNumber; }
-	std::map<SOCKET, CSockets> getPool() { return PlayerPool; }
+	std::map<SOCKET, CSockets&> getPool() { return PlayerPool; }
 
 private:
 	int iRoomNumber;
-	std::map<SOCKET, CSockets> PlayerPool;
+	std::map<SOCKET, CSockets&> PlayerPool;
 };
 

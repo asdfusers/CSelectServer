@@ -3,7 +3,7 @@
 
 CRoomManager* CRoomManager::m_pInst = NULL;
 
-CRoomManager::CRoomManager() : roomIdx(1)
+CRoomManager::CRoomManager() : roomIdx(1) 
 {
 }
 
@@ -51,10 +51,6 @@ void CRoomManager::deleteRoom(CGameRoom room)
 	}
 }
 
-void CRoomManager::updateRoom(CGameRoom room)
-{
-
-}
 
 int CRoomManager::findRoomNumber(CGameRoom room)
 {
@@ -73,10 +69,8 @@ int CRoomManager::findRoomNumber(CGameRoom room)
 	return NULL;
 }
 
-CGameRoom CRoomManager::findRoom(int roomNumber)
+std::list<CGameRoom>::iterator CRoomManager::findRoom(int roomNumber)
 {
-
-	std::list<CGameRoom>::iterator itr;
 	itr = RoomPool.begin();
 
 	while (itr != RoomPool.end())
@@ -88,5 +82,7 @@ CGameRoom CRoomManager::findRoom(int roomNumber)
 		else
 			++itr;
 	}
-	return *itr;
+	return itr;
+
+
 }

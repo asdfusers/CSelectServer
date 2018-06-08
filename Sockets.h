@@ -9,15 +9,15 @@ public:
 	CSockets(SOCKET _socket);
 	~CSockets();
 	
-	char* getID() { return ID; }
+	char* getID() 	{ return ID;}
 	int getLevel() { return iLevel; }
 	int getRoomidx() { return iRoomNum; }
 	Status getStatus() { return eStatus; }
 	
 
 
-	void setID(char* _ID){ 	ID = _ID; 	}
-	void setiLevel(int _ilv) { iLevel = _ilv; }
+	void setID(char _ID[10]) { strcpy(ID, _ID); }
+	void setiLevel(int _ilv) {		iLevel = _ilv;	}
 	void setStatus(Status status) {	eStatus = status;	}
 	void setRoomNum(int _room) { iRoomNum = _room; }
 	CSockets& operator=(CSockets& rhs);
@@ -30,9 +30,9 @@ public:
 	int retVal;
 
 private:
-	char* ID;
+	char ID[10];
 	int iLevel;
-	int iRoomNum;
+	 int iRoomNum;
 	Status eStatus;
 
 };

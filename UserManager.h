@@ -13,14 +13,13 @@ private:
 
 
 public:
-	void insertUser(CSockets client);
+	void insertUser(CSockets& client);
 	void deleteUser(CSockets client);
-	void update(CSockets client);
-	CSockets findUser(SOCKET socket);
-
+	std::map<SOCKET, CSockets>::iterator findUser(SOCKET socket);
 
 public:
 	std::map<SOCKET, CSockets> clientPool;
+	std::map<SOCKET, CSockets>::iterator itr;
 };
 
 

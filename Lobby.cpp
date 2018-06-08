@@ -13,7 +13,7 @@ void CLobby::releaseInst()
 }
 
 
-void CLobby::insertUserPool(CSockets& User)
+void CLobby::insertUserPool(CSockets User)
 {
 	LobbyClientPool.insert(std::pair<SOCKET, CSockets>(User.sock, User));
 }

@@ -13,6 +13,8 @@ CSockets::~CSockets()
 	
 }
 
+
+
 CSockets & CSockets::operator=(CSockets & rhs)
 {
 	sock = rhs.sock;
@@ -20,7 +22,10 @@ CSockets & CSockets::operator=(CSockets & rhs)
 	sendPacketSize = rhs.sendPacketSize;
 	receivedBuffer[PACKETBUFFERSIZE] = rhs.receivedBuffer[PACKETBUFFERSIZE];
 	retVal = rhs.retVal;
-	ID = rhs.ID;
+	strcpy(ID, rhs.ID);
+	iLevel = rhs.iLevel;
+	iRoomNum = rhs.iRoomNum;
+	eStatus = rhs.eStatus;
 	return *this;
 }
 

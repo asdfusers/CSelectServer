@@ -1,6 +1,15 @@
-﻿  RoomManager.cpp
+﻿  Server.cpp
+  SelectThread.cpp
   Generating Code...
   Skipping... (no relevant changes detected)
-  Server.cpp
+  UserManager.cpp
+  Sockets.cpp
+  RoomManager.cpp
+  Room.cpp
+  MessageQue.cpp
+  Lobby.cpp
+  GameRoom.cpp
+  CSelectServer.cpp
+  AcceptThread.cpp
   CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.exe
   CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.pdb (Full PDB)

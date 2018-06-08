@@ -13,7 +13,7 @@ public:
 		return m_pInst;
 	}
 	static void releaseInst();
-	virtual void insertUserPool(CSockets& User);
+	virtual void insertUserPool(CSockets User);
 	virtual void deleteUserPool(CSockets User);
 	virtual CSockets findUserPool(SOCKET socket);
 public:

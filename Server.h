@@ -23,15 +23,17 @@ public:
 	void Update();
 	bool sendMessage(CPacket packet);
 	bool broadCast(CPacket packet);
+	bool broadCastInRoom(CPacket packet);
 	void packetParsing(CPacket packet);
 	void onLoginPacket1Req(CPacket & packet);
 	void onPSelectLobbyOption(CPacket & packet);
 	void onPPlayerEnterRoom(CPacket & packet);
+	void onPBroadCastEnterRoom(CPacket & packet);
 
 
 	void DeleteUserPool(SOCKET socket);
 	void ChoiceLobbyOption(int iNum, SOCKET socket);
-	void ViewUserInformation(CSockets User);
+	std::string ViewUserInformation(CSockets User);
 private:
 	SOCKET mListen;
 	SOCKADDR_IN sockAddr;

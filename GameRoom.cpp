@@ -14,7 +14,7 @@ CGameRoom::~CGameRoom()
 void CGameRoom::insertUserPool(CSockets& User)
 {
 	User.setRoomNum(iRoomNumber);
-	PlayerPool.insert(std::pair<SOCKET, CSockets>(User.sock, User));
+	PlayerPool.insert(std::pair<SOCKET, CSockets&>(User.sock, User));
 }
 
 void CGameRoom::deleteUserPool(CSockets User)
@@ -24,7 +24,7 @@ void CGameRoom::deleteUserPool(CSockets User)
 
 CSockets CGameRoom::findUserPool(SOCKET socket)
 {
-	std::map<SOCKET, CSockets>::iterator itr;
+	std::map<SOCKET, CSockets&>::iterator itr;
 	itr = PlayerPool.begin();
 
 	while (itr != PlayerPool.end())
@@ -35,5 +35,6 @@ CSockets CGameRoom::findUserPool(SOCKET socket)
 		else
 			itr++;
 	}
+	
 	return NULL;
 }

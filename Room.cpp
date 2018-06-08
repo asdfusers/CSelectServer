@@ -9,3 +9,7 @@ CRoom::~CRoom()
 {
 }
 
+void CRoom::insertUserPool(CSockets User)
+{
+}
+
