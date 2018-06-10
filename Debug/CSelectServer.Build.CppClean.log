@@ -1,34 +1,41 @@
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.pch
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\vc140.pdb
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\vc140.idb
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\stdafx.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\acceptthread.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\server.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\sockets.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\recvque.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\selectthread.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\usermanager.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\messageque.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\lobby.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\room.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\gameroom.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\roommanager.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.ilk
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.exe
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.pdb
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.vcxprojresolveassemblyreference.cache
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\gamemanager.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\gameuser.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\session.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\stage.obj
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\server.obj.enc
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectclient.ilk
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\common.pdb
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectclient.pdb
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.tlog\cl.command.1.tlog
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.tlog\cl.read.1.tlog
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.tlog\cl.write.1.tlog
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.tlog\link.command.1.tlog
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.tlog\link.read.1.tlog
-c:\users\gc\documents\visual studio 2015\projects\cselectserver\debug\cselectserver.tlog\link.write.1.tlog
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.pch
+c:\users\danawacomputer\documents\github\cselectserver\debug\vc140.pdb
+c:\users\danawacomputer\documents\github\cselectserver\debug\vc140.idb
+c:\users\danawacomputer\documents\github\cselectserver\debug\stdafx.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\gamemanager.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\gameuser.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\stage.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\acceptthread.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\gameroom.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\lobby.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\messageque.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\room.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\roommanager.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\selectthread.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\server.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\sockets.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\usermanager.obj
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.ilk
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.exe
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.pdb
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.vcxprojresolveassemblyreference.cache
+c:\users\danawacomputer\documents\github\cselectserver\debug\acceptthread.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\gameroom.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\lobby.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\room.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\roommanager.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\selectthread.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\server.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\sockets.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\usermanager.obj.enc
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectclient.ilk
+c:\users\danawacomputer\documents\github\cselectserver\debug\common.pdb
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectclient.pdb
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.tlog\cl.command.1.tlog
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.tlog\cl.read.1.tlog
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.tlog\cl.write.1.tlog
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.tlog\link.command.1.tlog
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.tlog\link.read.1.tlog
+c:\users\danawacomputer\documents\github\cselectserver\debug\cselectserver.tlog\link.write.1.tlog

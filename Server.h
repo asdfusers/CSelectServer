@@ -29,11 +29,13 @@ public:
 	void onPSelectLobbyOption(CPacket & packet);
 	void onPPlayerEnterRoom(CPacket & packet);
 	void onPBroadCastEnterRoom(CPacket & packet);
-
+	void onPReadyReq(CPacket & packet);
+	void onPReadyResult(CPacket & packet);
 
 	void DeleteUserPool(SOCKET socket);
 	void ChoiceLobbyOption(int iNum, SOCKET socket);
 	std::string ViewUserInformation(CSockets User);
+	std::string VIewUserStatuInformation(CSockets User);
 private:
 	SOCKET mListen;
 	SOCKADDR_IN sockAddr;

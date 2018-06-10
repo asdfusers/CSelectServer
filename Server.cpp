@@ -85,8 +85,8 @@ void CServer::Update()
 
 	if (!_SelectThread.recvMessageQue.messageQue.empty())
 	{
-		CCriticalSectionLock cs(_SelectThread.cs);
 		packetParsing(_SelectThread.recvMessageQue.messageQue.front());
+		CCriticalSectionLock cs(_SelectThread.cs);
 		_SelectThread.recvMessageQue.messageQue.pop();
 	}
 	if (!sendMessageQue.messageQue.empty())
@@ -98,7 +98,6 @@ void CServer::Update()
 
 bool CServer::sendMessage(CPacket packet)
 {
-	std::cout << packet.getSocketNumber() << std::endl;
 	retVal = send(packet.getSocketNumber(), packet.getPacketBuffer(), packet.getPacketSize(), 0);
 	if (retVal == SOCKET_ERROR)
 		return false;
@@ -141,6 +140,8 @@ void  CServer::packetParsing(CPacket packet)
 	case  P_LOBBYOPTION_REQ:				onPSelectLobbyOption(packet);		break;
 	case  P_ENTERROOM_REQ:					onPPlayerEnterRoom(packet);			break;
 	case  P_BROADCAST_ENTER_ROOM_REQ:		onPBroadCastEnterRoom(packet);		break;
+	case  P_READY_REQ:						onPReadyReq(packet);				break;
+	case  P_READYRESULT_REQ:				onPReadyResult(packet);				break;
 	}
 }
 
@@ -180,7 +181,7 @@ void  CServer::onPSelectLobbyOption(CPacket & packet)
 		case 1:
 		{
 			std::string str = ViewUserInformation(CUserManager::getInst()->findUser(packet.getSocketNumber())->second);
-			CPacket sendPacket(P_LOBBYOPTION_ACK);
+			CPacket sendPacket(P_ENTERROOM_ACK);
 			sendPacket.SetSocketNumber(packet.getSocketNumber());
 			sendPacket << str;
 			sendMessageQue.messageQue.push(sendPacket);
@@ -235,20 +236,54 @@ void CServer::onPBroadCastEnterRoom(CPacket & packet)
 {
 	{
 		std::string str = ViewUserInformation(CUserManager::getInst()->findUser(packet.getSocketNumber())->second);
-		std::cout << packet.getSocketNumber() << std::endl;
 		for (auto &player : CRoomManager::getinst()->findRoom(CUserManager::getInst()->findUser(packet.getSocketNumber())->second.getRoomidx())->getPool())
 		{
 			if (player.second.sock == packet.getSocketNumber())
 				continue;
 
 			CPacket sendPacket(P_BROADCAST_ENTER_ROOM_ACK);
-			sendPacket.SetSocketNumber(player.first);
-			std::cout << packet.getSocketNumber() << std::endl;
+			sendPacket.SetSocketNumber(player.second.sock);
 			sendPacket << str;
 			sendMessageQue.messageQue.push(sendPacket);
 		}
 	}
 
+}
+
+void CServer::onPReadyReq(CPacket & packet)
+{
+	XTrace(L"%d", 1);
+	for (auto &player : CRoomManager::getinst()->findRoom(CUserManager::getInst()->findUser(packet.getSocketNumber())->second.getRoomidx())->getPool())
+	{
+		CPacket sendPacket(P_READY_ACK);
+		sendPacket.SetSocketNumber(player.second.sock);
+		sendPacket << L"레디하시려면 1을 입력해주세요. \n";
+		sendMessageQue.messageQue.push(sendPacket);
+	}
+
+}
+void CServer::onPReadyResult(CPacket & packet)
+{
+	
+	int iInput;
+
+	packet >> iInput;
+
+	if (iInput == 1)
+		CUserManager::getInst()->findUser(packet.getSocketNumber())->second.setStatus(Ready);
+
+	std::string str = ViewUserInformation(CUserManager::getInst()->findUser(packet.getSocketNumber())->second);
+	
+	for (auto &player : CRoomManager::getinst()->findRoom(CUserManager::getInst()->findUser(packet.getSocketNumber())->second.getRoomidx())->getPool())
+	{
+		CPacket sendPacket(P_READYRESULT_ACK);
+		sendPacket.SetSocketNumber(player.second.sock);
+		sendPacket << str;
+		sendMessageQue.messageQue.push(sendPacket);
+	
+	}
+
+	
 }
 
 
@@ -276,14 +311,14 @@ void CServer::ChoiceLobbyOption(int iNum, SOCKET socket)
 		CGameRoom GameRoom;
 		CRoomManager::getinst()->insertRoom(GameRoom);
 		CRoomManager::getinst()->findRoom(GameRoom.GetRoomNumber())->insertUserPool(CUserManager::getInst()->findUser(socket)->second);
-		std::map<SOCKET, CSockets>::iterator itr = CUserManager::getInst()->clientPool.begin();
-		itr->second.setStatus(InRoom);
+		CUserManager::getInst()->findUser(socket)->second.setStatus(InRoom);
+
 	}
 		break;
 	case 2:
 	{
-		std::map<SOCKET, CSockets>::iterator itr = CUserManager::getInst()->clientPool.begin();
-		itr->second.setStatus(InRoom);
+		CUserManager::getInst()->findUser(socket)->second.setStatus(InRoom);
+
 	}
 		break;
 	}
@@ -302,11 +337,26 @@ std::string CServer::ViewUserInformation(CSockets User)
 		temp += std::to_string(player.second.getLevel());
 		temp += "\t";
 		temp += "유저 상태 : ";
-		temp += std::to_string(player.second.getStatus());
+		temp += (VIewUserStatuInformation(player.second));
 		temp += "\t";
 		temp += "\n";
 	}
 	return temp;
+}
+
+std::string CServer::VIewUserStatuInformation(CSockets User)
+{
+	switch (User.getStatus())
+	{
+	case 1:
+		return "Lobby";
+	case 2:
+		return "InRoom";
+	case 3:
+		return "Ready";
+	case 4:
+		return "GameStart";
+	}
 }
 
 
