@@ -238,7 +238,7 @@ bool CStage::CheckMove(char Stage[21][21], CGameUser pPlayer, char key)
 		break;
 	}
 
-	case VK_SPACE:
+	case 'r':
 	{
 		if (Stage[pPlayer.GetPlayerPos().y][pPlayer.GetPlayerPos().x] == '1')
 		{

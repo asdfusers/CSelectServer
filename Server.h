@@ -34,7 +34,7 @@ public:
 	void onPGameStartReady(CPacket & packet);
 	void onPGameStart(CPacket & packet);
 	void onPGameInputKey(CPacket & packet);
-
+	void onEnemyPostion(CPacket & packet);
 
 
 	bool playerPositionSetting(std::string cInputKey,CPosition pos ,CPacket & packet);

@@ -91,8 +91,11 @@ void CServer::Update()
 	}
 	if (!sendMessageQue.messageQue.empty())
 	{
-		sendMessage(sendMessageQue.messageQue.front());
-		
+		while (!sendMessageQue.messageQue.empty())
+		{
+			sendMessage(sendMessageQue.messageQue.front());
+			sendMessageQue.messageQue.pop();
+		}
 	}
 }
 
@@ -101,7 +104,6 @@ bool CServer::sendMessage(CPacket packet)
 	retVal = send(packet.getSocketNumber(), packet.getPacketBuffer(), packet.getPacketSize(), 0);
 	if (retVal == SOCKET_ERROR)
 		return false;
-	sendMessageQue.messageQue.pop();
 	return true;
 }
 
@@ -347,14 +349,29 @@ void CServer::onPGameInputKey(CPacket & packet)
 	{
 		asdf += pStr[i];
 	}
-	playerPositionSetting(asdf, pos, packet);
-
 	bool bAbleCheck = playerPositionSetting(asdf, pos, packet);
 
-	CPacket sendPacket(P_GAMEINPUT_ACK);
-	sendPacket.SetSocketNumber(packet.getSocketNumber());
-	sendPacket << bAbleCheck << cInput;
-	sendMessageQue.messageQue.push(sendPacket);
+
+
+	for (auto &player : CRoomManager::getinst()->findRoom(CUserManager::getInst()->findUser(packet.getSocketNumber())->second.getRoomidx())->getPool())
+	{
+		if (player.first == packet.getSocketNumber())
+		{
+			CPacket sendPacket(P_GAMEINPUT_ACK);
+			sendPacket.SetSocketNumber(packet.getSocketNumber());
+			sendPacket << bAbleCheck << cInput;
+			sendMessageQue.messageQue.push(sendPacket);
+		}
+
+		else {
+
+		CPacket sendPacket(P_ENEMYPOS_ACK);
+		sendPacket.SetSocketNumber(player.first);
+		sendPacket << bAbleCheck << cInput;
+		sendMessageQue.messageQue.push(sendPacket);
+	
+		}
+	}
 	
 }
 
