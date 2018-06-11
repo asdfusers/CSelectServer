@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcceptThread.h" />
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRoom.h" />
     <ClInclude Include="GameUser.h" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AcceptThread.cpp" />
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="CSelectServer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameRoom.cpp" />

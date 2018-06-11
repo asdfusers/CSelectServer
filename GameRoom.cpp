@@ -4,6 +4,7 @@
 
 CGameRoom::CGameRoom()
 {
+	m_Stage = new CStage;
 }
 
 
@@ -37,4 +38,9 @@ CSockets CGameRoom::findUserPool(SOCKET socket)
 	}
 	
 	return NULL;
+}
+
+void CGameRoom::GameStart()
+{
+	m_Stage->Init();
 }

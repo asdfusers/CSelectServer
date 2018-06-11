@@ -12,10 +12,12 @@ public:
 	char* getID() 	{ return ID;}
 	int getLevel() { return iLevel; }
 	int getRoomidx() { return iRoomNum; }
+	int getPlayerTeam() { return iTeam; }
 	Status getStatus() { return eStatus; }
 	
 
 
+	void setIteam(int _iTeam) { iTeam = _iTeam; }
 	void setID(char _ID[10]) { strcpy(ID, _ID); }
 	void setiLevel(int _ilv) {		iLevel = _ilv;	}
 	void setStatus(Status status) {	eStatus = status;	}
@@ -32,7 +34,8 @@ public:
 private:
 	char ID[10];
 	int iLevel;
-	 int iRoomNum;
+	int iRoomNum;
+	int iTeam;
 	Status eStatus;
 
 };
