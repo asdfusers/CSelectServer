@@ -19,7 +19,7 @@ public:
 	bool Init();
 	void Render(char m_pStage[STAGE_HEIGHT][STAGE_WIDTH]);
 	void RenderCharacter();
-	bool CheckMove(char Stage[21][21], CGameUser pPlayer, char key);
+	bool CheckMove(char Stage[21][21], CGameUser& pPlayer, char key);
 
 public:
 	HANDLE m_hConsole;

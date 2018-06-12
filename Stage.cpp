@@ -110,7 +110,7 @@ void CStage::RenderCharacter()
 	std::cout << "¡Ù";
 }
 
-bool CStage::CheckMove(char Stage[21][21], CGameUser pPlayer, char key)
+bool CStage::CheckMove(char Stage[21][21], CGameUser& pPlayer, char key)
 {
 	switch (key)
 	{
@@ -243,7 +243,7 @@ bool CStage::CheckMove(char Stage[21][21], CGameUser pPlayer, char key)
 		if (Stage[pPlayer.GetPlayerPos().y][pPlayer.GetPlayerPos().x] == '1')
 		{
 
-			if (!pPlayer.CreateBomb(Stage, &pPlayer, &pPlayer.GetBombQue()))
+			if (!pPlayer.CreateBomb(Stage, &pPlayer))
 				return false;
 
 			if (pPlayer.GetPlayerTeam() == 1)
@@ -266,7 +266,7 @@ bool CStage::CheckMove(char Stage[21][21], CGameUser pPlayer, char key)
 	case 't':
 	case 'T':
 	{
-		pPlayer.Fire(Stage, &pPlayer, pPlayer.GetBombQue());
+		pPlayer.Fire(Stage, &pPlayer);
 
 		if (pPlayer.GetPlayerTeam() == 1)
 		{

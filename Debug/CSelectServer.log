@@ -1,2 +1,4 @@
-﻿  CSelectServer.vcxproj -> C:\Users\danawacomputer\Documents\GitHub\CSelectServer\Debug\CSelectServer.exe
-  CSelectServer.vcxproj -> C:\Users\danawacomputer\Documents\GitHub\CSelectServer\Debug\CSelectServer.pdb (Full PDB)
+﻿  Server.cpp
+c:\users\gc\documents\visual studio 2015\projects\cselectserver\server.cpp(529): warning C4715: 'CServer::VIewUserStatuInformation': not all control paths return a value
+  CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.exe
+  CSelectServer.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectServer.pdb (Full PDB)

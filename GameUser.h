@@ -11,15 +11,16 @@ public:
 
 
 public:
-	bool CreateBomb(char Maze[21][21], CGameUser* pPlayer, std::deque<CBomb>* BombQue);
-	void Fire(char Maze[21][21], CGameUser* pPlayer, std::deque<CBomb> Bomb);
+	bool CreateBomb(char Maze[21][21], CGameUser* pPlayer);
+	void Fire(char Maze[21][21], CGameUser* pPlayer);
 
 public:
-	std::deque<CBomb> GetBombQue() { return BombQue; }
+	std::list<CBomb> GetBombQue() { return BombQue; }
 	CPosition GetPlayerPos() { return pos; }
 	int GetPlayerTeam() { return iTeam; }
 	int GetRoomNumber() { return iRoomNumber; }
 	
+	void insertBomb(CBomb& bomb) { BombQue.push_back(bomb); }
 	void SetPlayerTeam(int _iTeamNum) { iTeam = _iTeamNum; }
 	void SetPlayerpos(int x, int y) { pos.x = x; pos.y = y; }
 	void SetRoomNumber(int _RoomNumber) { iRoomNumber = _RoomNumber; }
@@ -33,7 +34,7 @@ private:
 	int iRoomNumber;
 	
 
-	std::deque<CBomb> BombQue;
+	std::list<CBomb> BombQue;
 
 	
 };

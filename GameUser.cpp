@@ -12,29 +12,29 @@ CGameUser::~CGameUser()
 {
 }
 
-bool CGameUser::CreateBomb(char Maze[21][21], CGameUser * pPlayer, std::deque<CBomb>* BombQue)
+bool CGameUser::CreateBomb(char Maze[21][21], CGameUser * pPlayer)
 {
-	if (BombQue->size() > 4)
+	if (BombQue.size() > 4)
 		return false;
 
 	CBomb bomb;
 	bomb.pos.x = pPlayer->pos.x;
 	bomb.pos.y = pPlayer->pos.y;
-	BombQue->push_back(bomb);
+	
+	insertBomb(bomb);
 	bCreateBomb = true;
 	Maze[bomb.pos.y][bomb.pos.x] = '4';
 
 	return true;
 }
 
-void CGameUser::Fire(char Maze[21][21], CGameUser * pPlayer, std::deque<CBomb> Bomb)
+void CGameUser::Fire(char Maze[21][21], CGameUser * pPlayer)
 {
 	CPosition pos;
 	pos = pPlayer->pos;
 
-	for (auto bomb : Bomb)
+	for (auto bomb : BombQue)
 	{
-
 		Maze[bomb.pos.y][bomb.pos.x] = '1';
 
 		for (int j = 1; j <=1; ++j)
@@ -71,5 +71,5 @@ void CGameUser::Fire(char Maze[21][21], CGameUser * pPlayer, std::deque<CBomb> B
 		}
 	}
 
-	Bomb.clear();
+	BombQue.clear();
 }

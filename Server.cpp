@@ -80,6 +80,17 @@ void CServer::CopySocketList()
 
 void CServer::Update()
 {
+	if (!CRoomManager::getinst()->getRoomPool().empty())
+	{
+		for (auto &room : CRoomManager::getinst()->getRoomPool())
+		{
+			if (room.getPool().empty())
+			{
+				CRoomManager::getinst()->deleteRoom(room);
+			}
+		}
+	}
+	
 	if (_AcceptThread.socketList.size() > 0)
 		CopySocketList();
 
@@ -208,6 +219,15 @@ void  CServer::onPSelectLobbyOption(CPacket & packet)
 			sendMessageQue.messageQue.push(sendPacket);
 		}
 			break;
+
+		default:
+		{
+			CPacket sendPacket(P_LOGINPACKET_ACK);
+			sendPacket.SetSocketNumber(packet.getSocketNumber());
+			sendPacket << L"여기는 로비입니다. \n1. 방 만들기\n2. 방 입장하기 ";
+			sendMessageQue.messageQue.push(sendPacket);
+		}
+		break;
 		}
 
 	
@@ -220,11 +240,46 @@ void  CServer::onPPlayerEnterRoom(CPacket & packet)
 		packet >> iInput;
 		printf("%d\n", iInput);
 
-		DeleteUserPool(packet.getSocketNumber());
-		CUserManager::getInst()->findUser(packet.getSocketNumber())->second.setStatus(InRoom);
-		CUserManager::getInst()->findUser(packet.getSocketNumber())->second.setRoomNum(iInput);
-		CRoomManager::getinst()->findRoom(iInput)->insertUserPool(CUserManager::getInst()->findUser(packet.getSocketNumber())->second);
-	
+		if (CRoomManager::getinst()->getRoomPool().empty())
+		{
+			CPacket sendPacket(P_LOGINPACKET_ACK);
+			sendPacket.SetSocketNumber(packet.getSocketNumber());
+			sendPacket << L"여기는 로비입니다. \n1. 방 만들기\n2. 방 입장하기 ";
+			sendMessageQue.messageQue.push(sendPacket);
+			return;
+		}
+		else
+		{
+			for (auto Room : CRoomManager::getinst()->getRoomPool())
+			{
+				if (Room.GetRoomNumber() == iInput)
+				{
+					if (CRoomManager::getinst()->findRoom(iInput)->getPool().size() >= 2)
+					{
+						CPacket sendPacket(P_LOGINPACKET_ACK);
+						sendPacket.SetSocketNumber(packet.getSocketNumber());
+						sendPacket << L"여기는 로비입니다. \n1. 방 만들기\n2. 방 입장하기 ";
+						sendMessageQue.messageQue.push(sendPacket);
+						return;
+					}
+				
+					continue;
+				}
+				else
+				{
+					CPacket sendPacket(P_LOGINPACKET_ACK);
+					sendPacket.SetSocketNumber(packet.getSocketNumber());
+					sendPacket << L"여기는 로비입니다. \n1. 방 만들기\n2. 방 입장하기 ";
+					sendMessageQue.messageQue.push(sendPacket);
+					return;
+				}
+			}
+
+			DeleteUserPool(packet.getSocketNumber());
+			CUserManager::getInst()->findUser(packet.getSocketNumber())->second.setStatus(InRoom);
+			CUserManager::getInst()->findUser(packet.getSocketNumber())->second.setRoomNum(iInput);
+			CRoomManager::getinst()->findRoom(iInput)->insertUserPool(CUserManager::getInst()->findUser(packet.getSocketNumber())->second);
+		}
 	}
 
 	{
@@ -258,7 +313,6 @@ void CServer::onPBroadCastEnterRoom(CPacket & packet)
 
 void CServer::onPReadyReq(CPacket & packet)
 {
-	XTrace(L"%d", 1);
 	for (auto &player : CRoomManager::getinst()->findRoom(CUserManager::getInst()->findUser(packet.getSocketNumber())->second.getRoomidx())->getPool())
 	{
 		CPacket sendPacket(P_READY_ACK);
@@ -281,13 +335,12 @@ void CServer::onPReadyResult(CPacket & packet)
 	std::string str = ViewUserInformation(CUserManager::getInst()->findUser(packet.getSocketNumber())->second);
 
 
+
 	CPacket sendPacket(P_READYRESULT_ACK);
 	sendPacket.SetSocketNumber(packet.getSocketNumber());
 	sendPacket << str;
 	sendMessageQue.messageQue.push(sendPacket);
 
-
-	
 }
 
 void CServer::onPGameStartReady(CPacket & packet)

@@ -4,6 +4,7 @@
 #include "CriticalSectionLock.h"
 #include "Protocol.h"
 #include "UserManager.h"
+#include "RoomManager.h"
 #include <algorithm>
 CSelectThread::CSelectThread()
 {
