@@ -13,6 +13,15 @@ CSockets::~CSockets()
 	
 }
 
+char * CSockets::getID()
+{
+	char* pStr;
+	int strSize = WideCharToMultiByte(CP_ACP, 0, ID, -1, NULL, 0, NULL, NULL);
+	pStr = new char[strSize];
+	WideCharToMultiByte(CP_ACP, 0, ID, -1, pStr, strSize, 0, 0);
+	return pStr;
+}
+
 
 
 CSockets & CSockets::operator=(CSockets & rhs)
@@ -22,7 +31,7 @@ CSockets & CSockets::operator=(CSockets & rhs)
 	sendPacketSize = rhs.sendPacketSize;
 	receivedBuffer[PACKETBUFFERSIZE] = rhs.receivedBuffer[PACKETBUFFERSIZE];
 	retVal = rhs.retVal;
-	strcpy(ID, rhs.ID);
+	wcscpy_s(ID, rhs.ID);
 	iLevel = rhs.iLevel;
 	iRoomNum = rhs.iRoomNum;
 	eStatus = rhs.eStatus;

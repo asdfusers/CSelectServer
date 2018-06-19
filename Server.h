@@ -34,12 +34,11 @@ public:
 	void onPGameStartReady(CPacket & packet);
 	void onPGameStart(CPacket & packet);
 	void onPGameInputKey(CPacket & packet);
-	void onEnemyPostion(CPacket & packet);
 
 
 	bool playerPositionSetting(std::string cInputKey,CPosition pos ,CPacket & packet);
 	void DeleteUserPool(SOCKET socket);
-	void ChoiceLobbyOption(int iNum, SOCKET socket);
+	void ChoiceLobbyOption(wchar_t iNum[10], SOCKET socket);
 	std::string ViewUserInformation(CSockets User);
 	std::string VIewUserStatuInformation(CSockets User);
 

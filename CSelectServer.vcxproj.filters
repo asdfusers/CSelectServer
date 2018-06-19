@@ -70,7 +70,7 @@
       <Filter>InGame</Filter>
     </ClInclude>
     <ClInclude Include="Bomb.h">
-      <Filter>Header Files</Filter>
+      <Filter>InGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +120,7 @@
       <Filter>InGame</Filter>
     </ClCompile>
     <ClCompile Include="Bomb.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>InGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

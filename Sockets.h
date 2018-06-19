@@ -9,7 +9,7 @@ public:
 	CSockets(SOCKET _socket);
 	~CSockets();
 	
-	char* getID() 	{ return ID;}
+	char* getID();
 	int getLevel() { return iLevel; }
 	int getRoomidx() { return iRoomNum; }
 	int getPlayerTeam() { return iTeam; }
@@ -18,7 +18,7 @@ public:
 
 
 	void setIteam(int _iTeam) { iTeam = _iTeam; }
-	void setID(char _ID[10]) { strcpy(ID, _ID); }
+	void setID(wchar_t _ID[10]) { wcscpy_s(ID, _ID); }
 	void setiLevel(int _ilv) {		iLevel = _ilv;	}
 	void setStatus(Status status) {	eStatus = status;	}
 	void setRoomNum(int _room) { iRoomNum = _room; }
@@ -32,7 +32,7 @@ public:
 	int retVal;
 
 private:
-	char ID[10];
+	wchar_t ID[10];
 	int iLevel;
 	int iRoomNum;
 	int iTeam;
